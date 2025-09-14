@@ -32,6 +32,7 @@
 #if AP_SIM_ENABLED
 #include <AP_HAL/SIMState.h>
 #endif
+#include "LSPDriver.h"
 
 static ESP32::UARTDriver cons(0);
 #ifdef HAL_ESP32_WIFI
@@ -43,10 +44,10 @@ static ESP32::WiFiUdpDriver serial1Driver; //udp
 static Empty::UARTDriver serial1Driver;
 #endif
 #else
-static Empty::UARTDriver serial1Driver;
+static ESP32::LSPDriver serial1Driver;
 #endif
-static ESP32::UARTDriver serial2Driver(2);
-static ESP32::UARTDriver serial3Driver(1);
+static ESP32::UARTDriver serial2Driver(1);  //Input to my protocol
+static ESP32::LSPDriver serial3Driver;
 static Empty::UARTDriver serial4Driver;
 static Empty::UARTDriver serial5Driver;
 static Empty::UARTDriver serial6Driver;
