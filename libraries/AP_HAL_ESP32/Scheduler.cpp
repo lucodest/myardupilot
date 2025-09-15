@@ -88,7 +88,7 @@ void Scheduler::init()
     	hal.console->printf("OK created task _main_thread on FASTCPU\n");
     }
 
-    if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, this, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
+    if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
          hal.console->printf("FAILED to create task _ahrs_thread on SLOWCPU\n");
     } else {
     	hal.console->printf("OK created task _ahrs_thread on SLOWCPU\n");
@@ -548,8 +548,10 @@ void Scheduler::print_main_loop_rate(void)
 
 void IRAM_ATTR Scheduler::_ahrs_thread(void *arg)
 {
+    BinarySemaphore* sem = (BinarySemaphore*) arg;
+
     while(true) {
-        _ahrs_sem.wait_blocking();
+        sem->wait_blocking();
 
         ahrs.update(true);
     }

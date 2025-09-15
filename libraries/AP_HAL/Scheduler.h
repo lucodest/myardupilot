@@ -126,6 +126,10 @@ public:
         return false;
     }
 
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    virtual void ahrs_signal() {}
+#else
+
 private:
 
     AP_HAL::Proc _delay_cb;
