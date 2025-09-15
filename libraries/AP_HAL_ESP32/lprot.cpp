@@ -2,6 +2,8 @@
 #include "LSPDriver.h"
 #include "AP_Math/crc.h"
 
+extern const AP_HAL::HAL& hal;
+
 using namespace ESP32;
 
 LProt* LProt::singleton_ = nullptr;
@@ -16,6 +18,32 @@ LProt* LProt::instance() {
 
 LProt::LProt() {
     pkt_buffer = new uint8_t[261];
+
+    //Use serialmanager later
+    uart = hal.serial(2);
+
+    uart->begin(115200, 512, 512);
+
+    hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
+}
+
+LProt::update_thread(void) {
+    uint8_t buf[128];
+
+    while(true) {
+        
+        uint32_t av = uart->available();
+        if(av > 0) {
+            av = av > 128 : 128 : av;
+            uart->read(buf, av);
+            handleRx(buf, av);
+        }
+    }
+    
+}
+
+LProt::handleTx(uint8_t* data, uint16_t len) {
+    uart->write(data, len);
 }
 
 inline void LProt::handleSensorData(uint8_t type, uint8_t* data, uint8_t len) {

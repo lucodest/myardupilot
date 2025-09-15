@@ -92,6 +92,9 @@ private:
     bool inPacket = false;
     uint16_t pkt_index = 0;
     uint8_t *pkt_buffer;
+    AP_HAL::UARTDriver *uart;
+
+    void update_thread(void);
 
     inline void handleSensorData(uint8_t type, uint8_t* data, uint8_t len);
     void handlePayload(uint8_t type, uint8_t* data, uint8_t len);
