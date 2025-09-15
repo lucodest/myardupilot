@@ -59,6 +59,10 @@ inline void LProt::handleSensorData(uint8_t type, uint8_t* data, uint8_t len) {
             break;
         case IMU:
             handleImuData(*((IMU_DATA_t*) data));
+            break;
+        case RC:
+            handleRcData(*((RC_DATA_t*) data));
+            break;
         default:
 
             break;
@@ -166,4 +170,8 @@ void LProt::handleMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
     if(vu != NULL) {
         vu->back_write(data, len);
     }
+}
+
+void LProt::handleRcData(RC_DATA_t data) {
+    
 }

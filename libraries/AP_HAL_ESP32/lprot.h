@@ -51,7 +51,9 @@ public:
         //3-Axis Magnetometer (Compass)
         MAG = 2,
 
-        IMU = 3
+        IMU = 3,
+
+        RC = 4
     } LPROT_SENSOR_TYPE;
 
     typedef struct PACKED {
@@ -74,6 +76,15 @@ public:
         int16_t gy;
         int16_t gz;
     } IMU_DATA_t;
+
+    typedef struct PACKED {
+        unsigned chan1 : 11;
+        unsigned chan2 : 11;
+        unsigned chan3 : 11;
+        unsigned chan4 : 11;
+        unsigned chan5 : 11;
+        unsigned chan6 : 11;
+    } RC_DATA_t;
 
     //Handle raw recived data, MUST be called by user
     void handleRx(uint8_t* data, uint16_t len);
@@ -108,6 +119,7 @@ private:
     void handleBaroData(BARO_DATA_t data) {};
     void handleMagData(MAG_DATA_t data) {};
     void handleImuData(IMU_DATA_t data) {};
+    void handleRcData(RC_DATA_t data) {};
 
     //Handle raw data to transmitt, MUST be implemented by user
     void handleTx(uint8_t* data, uint16_t len);
