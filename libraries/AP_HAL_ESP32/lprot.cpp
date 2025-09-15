@@ -34,7 +34,7 @@ void LProt::update_thread(void) {
         
         uint32_t av = uart->available();
         if(av > 0) {
-            av = av > 128 : 128 : av;
+            av = av > 128 ? 128 : av;
             uart->read(buf, av);
             handleRx(buf, av);
         }
