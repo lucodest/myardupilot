@@ -553,7 +553,7 @@ void IRAM_ATTR Scheduler::_ahrs_thread(void *arg)
     while(true) {
         sem->wait_blocking();
 
-        ahrs.update(true);
+        AP::ahrs().update(true);
     }
 }
 
