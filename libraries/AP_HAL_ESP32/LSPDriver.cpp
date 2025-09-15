@@ -56,7 +56,7 @@ bool LSPDriver::_discard_input()
     return true;
 }
 
-void IRAM_ATTR UARTDriver::_timer_tick(void)
+void IRAM_ATTR LSPDriver::_timer_tick(void)
 {
     if (!_initialized) {
         return;
