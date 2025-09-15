@@ -88,6 +88,12 @@ void Scheduler::init()
     	hal.console->printf("OK created task _main_thread on FASTCPU\n");
     }
 
+    if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, this, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
+         hal.console->printf("FAILED to create task _ahrs_thread on SLOWCPU\n");
+    } else {
+    	hal.console->printf("OK created task _ahrs_thread on SLOWCPU\n");
+    }
+
     if (xTaskCreatePinnedToCore(_timer_thread, "APM_TIMER", TIMER_SS, this, TIMER_PRIO, &_timer_task_handle,FASTCPU) != pdPASS) {
         hal.console->printf("FAILED to create task _timer_thread on FASTCPU\n");
     } else {
@@ -538,6 +544,19 @@ void Scheduler::print_main_loop_rate(void)
         const uint16_t expected_loop_rate = AP::scheduler().get_loop_rate_hz();
         hal.console->printf("loop_rate: actual: %fHz, expected: %uHz\n", actual_loop_rate, expected_loop_rate);
     }
+}
+
+void IRAM_ATTR Scheduler::_ahrs_thread(void *arg)
+{
+    while(true) {
+        _ahrs_sem.wait_blocking();
+
+        ahrs.update(true);
+    }
+}
+
+void Scheduler::ahrs_signal() {
+    _ahrs_sem.signal();
 }
 
 void IRAM_ATTR Scheduler::_main_thread(void *arg)

@@ -59,6 +59,8 @@ public:
     static void thread_create_trampoline(void *ctx);
     bool thread_create(AP_HAL::MemberProc, const char *name, uint32_t stack_size, priority_base base, int8_t priority) override;
 
+    void ahrs_signal();
+
     /*static const int SPI_PRIORITY = 40; // if your primary imu is spi, this should be above the i2c value, spi is better.
     static const int MAIN_PRIO = 15;
     static const int I2C_PRIORITY = 8; // if your primary imu is i2c, this should be above the spi value, i2c is not preferred.
@@ -109,6 +111,7 @@ private:
     static bool _initialized;
 
     tskTaskControlBlock* _main_task_handle;
+    tskTaskControlBlock* _ahrs_task_handle;
     tskTaskControlBlock* _timer_task_handle;
     tskTaskControlBlock* _rcin_task_handle;
     tskTaskControlBlock* _rcout_task_handle;
@@ -117,7 +120,10 @@ private:
     tskTaskControlBlock* test_task_handle;
     tskTaskControlBlock* _storage_task_handle;
 
+    BinarySemaphore _ahrs_sem;
+
     static void _main_thread(void *arg);
+    static void _ahrs_thread(void *arg);
     static void _timer_thread(void *arg);
     static void _rcout_thread(void *arg);
     static void _rcin_thread(void *arg);

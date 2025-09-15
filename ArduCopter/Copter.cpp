@@ -898,8 +898,12 @@ void Copter::update_super_simple_bearing(bool force_update)
 
 void Copter::read_AHRS(void)
 {
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    hal.scheduler->ahrs_signal();
+#else
     // we tell AHRS to skip INS update as we have already done it in FAST_TASK.
     ahrs.update(true);
+#endif
 }
 
 // read baro and log control tuning
