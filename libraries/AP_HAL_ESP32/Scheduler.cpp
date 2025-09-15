@@ -587,7 +587,7 @@ void IRAM_ATTR Scheduler::_main_thread(void *arg)
 #endif
     while (true) {
         sched->callbacks->loop();
-        sched->delay_microseconds(250);
+        sched->delay_microseconds(150);
 
         // run stats periodically
 #ifdef SCHEDDEBUG
