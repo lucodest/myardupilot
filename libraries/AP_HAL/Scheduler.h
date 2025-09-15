@@ -128,7 +128,7 @@ public:
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
     virtual void ahrs_signal() {}
-#else
+#endif
 
 private:
 
