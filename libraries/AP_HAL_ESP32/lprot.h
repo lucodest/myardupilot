@@ -112,7 +112,7 @@ private:
     //Handle raw data to transmitt, MUST be implemented by user
     void handleTx(uint8_t* data, uint16_t len);
 
-    void handleError(uint8_t err, ...);
+    void handleError(uint8_t err, ...) {};
 };
 
 }
