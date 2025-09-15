@@ -27,7 +27,7 @@ LProt::LProt() {
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
 }
 
-LProt::update_thread(void) {
+void LProt::update_thread(void) {
     uint8_t buf[128];
 
     while(true) {
@@ -42,7 +42,7 @@ LProt::update_thread(void) {
     
 }
 
-LProt::handleTx(uint8_t* data, uint16_t len) {
+void LProt::handleTx(uint8_t* data, uint16_t len) {
     uart->write(data, len);
 }
 
