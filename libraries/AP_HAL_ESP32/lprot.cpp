@@ -38,6 +38,8 @@ void LProt::update_thread(void) {
             uart->read(buf, av);
             handleRx(buf, av);
         }
+
+        hal.scheduler->delay(1);
     }
     
 }
