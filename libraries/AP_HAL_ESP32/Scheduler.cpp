@@ -26,6 +26,7 @@
 #include "esp_task_wdt.h"
 
 #include <AP_HAL/AP_HAL.h>
+#include <AP_AHRS/AP_AHRS.h>
 #include <AP_Scheduler/AP_Scheduler.h>
 #include <stdio.h>
 
