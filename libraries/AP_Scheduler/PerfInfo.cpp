@@ -152,7 +152,7 @@ void AP::PerfInfo::check_loop_time(uint32_t time_in_micros)
         // helpful for bringup of other boards too
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
 #ifdef SCHEDDEBUG
-        DEV_PRINTF("way overtime: %dus\n", loop_time_us);
+        //DEV_PRINTF("way overtime: %dus\n", loop_time_us);
 #endif
 #endif
     }
