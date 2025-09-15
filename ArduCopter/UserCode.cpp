@@ -1,5 +1,4 @@
 #include "Copter.h"
-#include <AP_Common/ExpandingString.h>
 
 #ifdef USERHOOK_INIT
 void Copter::userhook_init()
@@ -38,17 +37,9 @@ void Copter::userhook_SlowLoop()
 #endif
 
 #ifdef USERHOOK_SUPERSLOWLOOP
-uint32_t last;
-ExpandingString str;
 void Copter::userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
-    if(AP_HAL::millis() - last > 10000) {
-        str.reset();
-        AP::scheduler().task_info(str);
-        hal.console->println(str.get_string());
-        last = AP_HAL::millis();
-    }
 }
 #endif
 
