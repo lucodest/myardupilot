@@ -266,7 +266,7 @@ void AP_Scheduler::run(uint32_t time_available)
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
         fill_nanf_stack();
 #endif
-        //task.function();
+        task.function();
         hal.util->persistent_data.scheduler_task = -1;
 
         // record the tick counter when we ran. This drives
