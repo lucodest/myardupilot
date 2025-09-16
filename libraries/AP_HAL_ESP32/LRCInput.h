@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AP_HAL_ESP32.h"
 #include "Semaphores.h"
 
 namespace ESP32 {
