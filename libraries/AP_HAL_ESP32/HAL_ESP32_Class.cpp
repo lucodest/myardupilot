@@ -33,6 +33,7 @@
 #include <AP_HAL/SIMState.h>
 #endif
 #include "LSPDriver.h"
+#include "LRCInput.h"
 
 static ESP32::UARTDriver cons(0);
 #ifdef HAL_ESP32_WIFI
@@ -77,7 +78,7 @@ static Empty::RCOutput rcoutDriver;
 #else
 static ESP32::RCOutput rcoutDriver;
 #endif
-static ESP32::RCInput rcinDriver;
+static ESP32::LRCInput rcinDriver;
 static ESP32::Scheduler schedulerInstance;
 static ESP32::Util utilInstance;
 static Empty::OpticalFlow opticalFlowDriver;
