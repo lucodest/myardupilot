@@ -119,7 +119,7 @@ private:
     void handleBaroData(BARO_DATA_t data) {};
     void handleMagData(MAG_DATA_t data) {};
     void handleImuData(IMU_DATA_t data) {};
-    void handleRcData(RC_DATA_t data) {};
+    void handleRcData(RC_DATA_t data);
 
     //Handle raw data to transmitt, MUST be implemented by user
     void handleTx(uint8_t* data, uint16_t len);
