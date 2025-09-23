@@ -29,8 +29,8 @@
 class AP_ExternalAHRS_backend;
 
 class AP_ExternalAHRS {
-#if AP_EXTERNAL_AHRS_ENABLED
 public:
+#if AP_EXTERNAL_AHRS_ENABLED
     friend class AP_ExternalAHRS_backend;
     friend class AP_ExternalAHRS_VectorNav;
 
