@@ -32,7 +32,7 @@
 
 //My Custom multiplexing protocol
 #define DEFAULT_SERIAL2_PROTOCOL SerialProtocol_None
-#define DEFAULT_SERIAL2_BAUD 115200
+#define DEFAULT_SERIAL2_BAUD 1000000
 
 //#define CONFIG_HAL_BOARD 12
 //#define HAL_BOARD_ESP32 12
@@ -71,7 +71,8 @@
 // disable all baros (except one of ur choice)
 #define AP_BARO_PROBE_EXTERNAL_I2C_BUSES 0
 #define AP_BARO_BACKEND_DEFAULT_ENABLED 0
-#define AP_BARO_BMP085_ENABLED 1
+//#define AP_BARO_BMP085_ENABLED 1
+#define AP_BARO_EXTERNALAHRS_ENABLED 1
 
 // ADC is available on lots of pints on the esp32, but adc2 can't co-exist with wifi we choose to allow ADC on :
 //#define HAL_DISABLE_ADC_DRIVER 1
@@ -85,7 +86,8 @@
 #define HAL_ESP32_ADC_PINS {{ADC2_GPIO15_CHANNEL, 11, 1}}
 
 #define AP_COMPASS_BACKEND_DEFAULT_ENABLED 0
-#define AP_COMPASS_QMC5883L_ENABLED 1
+//#define AP_COMPASS_QMC5883L_ENABLED 1
+#define AP_COMPASS_EXTERNALAHRS_ENABLED 1
 
 //#define HAL_PROBE_EXTERNAL_I2C_COMPASSES 1
 
@@ -105,9 +107,9 @@
 //#define HAL_INS_PROBE_LIST PROBE_IMU_SPI( Invensense, HAL_INS_MPU9250_NAME, ROTATION_NONE)
 //#define HAL_INS_PROBE_LIST PROBE_IMU_SPI( Invensense, HAL_INS_MPU9250_NAME, ROTATION_ROLL_180)
 
-#define HAL_BARO_PROBE_LIST PROBE_BARO_I2C(BMP085, 0, 0xEF)
+//#define HAL_BARO_PROBE_LIST PROBE_BARO_I2C(BMP085, 0, 0xEF)
 
-#define HAL_MAG_PROBE_LIST PROBE_MAG_I2C(QMC5883L, 0, 0x0D, false, ROTATION_NONE)
+//#define HAL_MAG_PROBE_LIST PROBE_MAG_I2C(QMC5883L, 0, 0x0D, false, ROTATION_NONE)
 
 // 2 use udp, 1 use tcp...  for udp,client needs to connect as UDPCL in missionplanner etc to 192.168.4.1 port 14550
 //#define HAL_ESP32_WIFI 1
@@ -136,15 +138,15 @@
 // note... we use 'vspi' for the bmp280 and mpu9250
 // tip:  VSPI_HOST  is an alternative name for esp's SPI3
 #define HAL_ESP32_SPI_BUSES \
-    {.host=SPI2_HOST, .dma_ch=SPI_DMA_CH_AUTO, .mosi=GPIO_NUM_13, .miso=GPIO_NUM_14, .sclk=GPIO_NUM_15}
+    {}
 
 // SPI per-device setup, including speeds, etc.
 #define HAL_ESP32_SPI_DEVICES \
-    {.name= "bmi160", .bus=0, .device=1, .cs=GPIO_NUM_16, .mode = 3, .lspeed=1*MHZ, .hspeed=8*MHZ}
+    {}
 
 //I2C bus list
 #define HAL_ESP32_I2C_BUSES \
-	{.port=I2C_NUM_0, .sda=GPIO_NUM_4, .scl=GPIO_NUM_2, .speed=400*KHZ, .internal=true}
+	{.port=I2C_NUM_0, .sda=GPIO_NUM_23, .scl=GPIO_NUM_26, .speed=400*KHZ, .internal=true}
 //#define HAL_ESP32_I2C_BUSES {} // using this embty block appears to cause crashes?
 
 
@@ -154,7 +156,7 @@
 
 //HARDWARE UARTS
 #define HAL_ESP32_UART_DEVICES \
-  {.port=UART_NUM_0, .rx=GPIO_NUM_3, .tx=GPIO_NUM_1 }, {.port=UART_NUM_1, .rx=GPIO_NUM_23, .tx=GPIO_NUM_26 }
+  {.port=UART_NUM_0, .rx=GPIO_NUM_3, .tx=GPIO_NUM_1 }, {.port=UART_NUM_1, .rx=GPIO_NUM_4, .tx=GPIO_NUM_2 }
 
 // #define AP_FILESYSTEM_ESP32_ENABLED 1
 

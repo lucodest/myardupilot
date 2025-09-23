@@ -2,6 +2,7 @@
 #include "LSPDriver.h"
 #include "LRCInput.h"
 #include "AP_Math/crc.h"
+#include <AP_ExternalAHRS/AP_ExternalAHRS.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -23,7 +24,7 @@ LProt::LProt() {
     //Use serialmanager later
     uart = hal.serial(2);
 
-    uart->begin(115200, 512, 512);
+    uart->begin(1000000, 512, 512);
 
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
 }
@@ -184,4 +185,23 @@ void LProt::handleRcData(RC_DATA_t data) {
     periods[5] = data.chan6;
 
     ((LRCInput*) hal.rcin)->write(periods);
+}
+
+void LProt::handleBaroData(BARO_DATA_t data) {
+    AP_ExternalAHRS::baro_data_message_t pkt;
+
+    pkt.pressure_pa = data.pressure;
+    pkt.temperature = data.temperature / 10.0f;
+
+    AP::baro().handle_external(pkt);
+}
+
+void LProt::handleMagData(MAG_DATA_t data) {
+    AP_ExternalAHRS::mag_data_message_t pkt;
+
+    pkt.field.x = data.mag_x;
+    pkt.field.y = data.mag_y;
+    pkt.field.z = data.mag_z;
+
+    AP::compass().handle_external(pkt);
 }

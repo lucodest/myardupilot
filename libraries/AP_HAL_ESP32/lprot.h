@@ -116,8 +116,8 @@ private:
 
     //Functions callbacks for handling frame types, all implemented by user
     void handleMultiStream(uint8_t id, uint8_t* data, uint8_t len);
-    void handleBaroData(BARO_DATA_t data) {};
-    void handleMagData(MAG_DATA_t data) {};
+    void handleBaroData(BARO_DATA_t data);
+    void handleMagData(MAG_DATA_t data);
     void handleImuData(IMU_DATA_t data) {};
     void handleRcData(RC_DATA_t data);
 

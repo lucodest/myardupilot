@@ -20,8 +20,6 @@
 
 #include "AP_ExternalAHRS_config.h"
 
-#if AP_EXTERNAL_AHRS_ENABLED
-
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Param/AP_Param.h>
 #include <AP_Common/Location.h>
@@ -31,7 +29,7 @@
 class AP_ExternalAHRS_backend;
 
 class AP_ExternalAHRS {
-
+#if AP_EXTERNAL_AHRS_ENABLED
 public:
     friend class AP_ExternalAHRS_backend;
     friend class AP_ExternalAHRS_VectorNav;
@@ -126,7 +124,7 @@ public:
 
     // update backend
     void update();
-
+#endif  // AP_EXTERNAL_AHRS_ENABLED
     /*
       structures passed to other subsystems
      */
@@ -168,7 +166,7 @@ public:
         float differential_pressure; // Pa
         float temperature; // degC
     } airspeed_data_message_t;
-
+#if AP_EXTERNAL_AHRS_ENABLED
     // set GNSS disable for auxillary function GPS_DISABLE
     void set_gnss_disable(bool disable) {
         gnss_is_disabled = disable;
@@ -206,11 +204,10 @@ private:
 
     // true when user has disabled the GNSS
     bool gnss_is_disabled;
+#endif  // AP_EXTERNAL_AHRS_ENABLED
 };
 
 namespace AP {
     AP_ExternalAHRS &externalAHRS();
 };
-
-#endif  // AP_EXTERNAL_AHRS_ENABLED
 
