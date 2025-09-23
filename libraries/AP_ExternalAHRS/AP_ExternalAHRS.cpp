@@ -18,9 +18,9 @@
 
 #include "AP_ExternalAHRS_config.h"
 
-#if AP_EXTERNAL_AHRS_ENABLED
 
 #include "AP_ExternalAHRS.h"
+#if AP_EXTERNAL_AHRS_ENABLED
 #include "AP_ExternalAHRS_backend.h"
 #include "AP_ExternalAHRS_VectorNav.h"
 #include "AP_ExternalAHRS_MicroStrain5.h"
@@ -467,6 +467,8 @@ const char* AP_ExternalAHRS::get_name() const
     return nullptr;
 }
 
+#endif  // AP_EXTERNAL_AHRS_ENABLED
+
 namespace AP {
 
 AP_ExternalAHRS &externalAHRS()
@@ -476,5 +478,4 @@ AP_ExternalAHRS &externalAHRS()
 
 };
 
-#endif  // AP_EXTERNAL_AHRS_ENABLED
 

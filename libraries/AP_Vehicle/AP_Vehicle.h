@@ -434,9 +434,9 @@ protected:
     AP_Generator generator;
 #endif
 
-#if AP_EXTERNAL_AHRS_ENABLED
+//#if AP_EXTERNAL_AHRS_ENABLED
     AP_ExternalAHRS externalAHRS;
-#endif
+//#endif
 
 #if AP_SMARTAUDIO_ENABLED
     AP_SmartAudio smartaudio;

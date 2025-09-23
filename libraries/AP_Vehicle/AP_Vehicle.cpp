@@ -391,10 +391,10 @@ void AP_Vehicle::setup()
     hal.scheduler->register_delay_callback(scheduler_delay_callback, 5);
 #endif
 
-#if AP_EXTERNAL_AHRS_ENABLED
+//#if AP_EXTERNAL_AHRS_ENABLED
     // call externalAHRS init before init_ardupilot to allow for external sensors
     externalAHRS.init();
-#endif
+//#endif
 
 #if HAL_GENERATOR_ENABLED
     generator.init();

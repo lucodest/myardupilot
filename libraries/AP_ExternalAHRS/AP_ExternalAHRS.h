@@ -36,8 +36,6 @@ public:
 
     AP_ExternalAHRS();
 
-    void init(void);
-
     static const struct AP_Param::GroupInfo var_info[];
 
     enum class DevType : uint8_t {
@@ -64,10 +62,6 @@ public:
         // 10 reserved for Aeron
     };
 
-    static AP_ExternalAHRS *get_singleton(void) {
-        return _singleton;
-    }
-
     // expected IMU rate in Hz
     float get_IMU_rate(void) const {
         return rate.get();
@@ -82,9 +76,6 @@ public:
         BARO = (1U<<2),
         COMPASS = (1U<<3),
     };
-
-    // get serial port number, -1 for not enabled
-    int8_t get_port(AvailableSensor sensor) const;
 
     struct state_t {
         HAL_Semaphore sem;
@@ -125,6 +116,16 @@ public:
     // update backend
     void update();
 #endif  // AP_EXTERNAL_AHRS_ENABLED
+
+    static AP_ExternalAHRS *get_singleton(void) {
+        return _singleton;
+    }
+
+    void init(void);
+
+    // get serial port number, -1 for not enabled
+    int8_t get_port(AvailableSensor sensor) const;
+
     /*
       structures passed to other subsystems
      */
