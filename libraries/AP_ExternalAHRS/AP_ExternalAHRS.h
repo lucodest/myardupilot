@@ -179,8 +179,11 @@ protected:
         VN_UNCOMP_IMU = 1U << 0,
     };
     bool option_is_set(OPTIONS option) const { return (options.get() & int32_t(option)) != 0; }
-
+#endif  // AP_EXTERNAL_AHRS_ENABLED
 private:
+    static AP_ExternalAHRS *_singleton;
+#if AP_EXTERNAL_AHRS_ENABLED
+
     AP_ExternalAHRS_backend *backend;
 
     AP_Enum<DevType> devtype;
@@ -189,7 +192,7 @@ private:
     AP_Int16         options;
     AP_Int16         sensors;
 
-    static AP_ExternalAHRS *_singleton;
+    
 
     // check if a sensor type is enabled
     bool has_sensor(AvailableSensor sensor) const {

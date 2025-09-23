@@ -20,6 +20,8 @@
 
 
 #include "AP_ExternalAHRS.h"
+
+AP_ExternalAHRS *AP_ExternalAHRS::_singleton;
 #if AP_EXTERNAL_AHRS_ENABLED
 #include "AP_ExternalAHRS_backend.h"
 #include "AP_ExternalAHRS_VectorNav.h"
@@ -34,8 +36,6 @@
 #include <AP_Logger/AP_Logger.h>
 
 extern const AP_HAL::HAL &hal;
-
-AP_ExternalAHRS *AP_ExternalAHRS::_singleton;
 
 // constructor
 AP_ExternalAHRS::AP_ExternalAHRS()
