@@ -70,13 +70,6 @@ public:
     // Get model/type name
     const char* get_name() const;
 
-    enum class AvailableSensor {
-        GPS = (1U<<0),
-        IMU = (1U<<1),
-        BARO = (1U<<2),
-        COMPASS = (1U<<3),
-    };
-
     struct state_t {
         HAL_Semaphore sem;
 
@@ -122,6 +115,13 @@ public:
     }
 
     void init(void);
+
+    enum class AvailableSensor {
+        GPS = (1U<<0),
+        IMU = (1U<<1),
+        BARO = (1U<<2),
+        COMPASS = (1U<<3),
+    };
 
     // get serial port number, -1 for not enabled
     int8_t get_port(AvailableSensor sensor) const;
