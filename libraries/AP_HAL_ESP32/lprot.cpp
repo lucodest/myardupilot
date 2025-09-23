@@ -3,6 +3,8 @@
 #include "LRCInput.h"
 #include "AP_Math/crc.h"
 #include <AP_ExternalAHRS/AP_ExternalAHRS.h>
+#include <AP_Baro/AP_Baro.h>
+#include <AP_Compass/AP_Compass.h>
 
 extern const AP_HAL::HAL& hal;
 
