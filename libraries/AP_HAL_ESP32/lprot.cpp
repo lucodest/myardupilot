@@ -21,8 +21,6 @@ LProt* LProt::instance() {
 }
 
 LProt::LProt() {
-    hal.console->print("linit\n");
-    
     pkt_buffer = new uint8_t[261];
 
     //Use serialmanager later
@@ -32,7 +30,7 @@ LProt::LProt() {
 
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
 
-    hal.console->print("linite\n");
+    hal.console->printf("linite\n");
 }
 
 void AP_ExternalAHRS::init(void) {
@@ -51,7 +49,7 @@ void LProt::update_thread(void) {
         
         uint32_t av = uart->available();
         if(av > 0) {
-            hal.console->print("inu\n");
+            hal.console->printf("inu\n");
 
             av = av > 128 ? 128 : av;
             uart->read(buf, av);
@@ -141,7 +139,7 @@ void LProt::handleRx(uint8_t* data, uint16_t len){
                         handlePayload(pkt_buffer[1], pkt_buffer + 3, pkt_buffer[2]);
                     //Crc error
                     }else{
-                        hal.console->print("crce\n");
+                        hal.console->printf("crce\n");
 
                         handleError(1, calc_crc, pkt_crc);
                         crc_errors++;
@@ -207,7 +205,7 @@ void LProt::handleRcData(RC_DATA_t data) {
 }
 
 void LProt::handleBaroData(BARO_DATA_t data) {
-    hal.console->print("gbp\n");
+    hal.console->printf("gbp\n");
 
     AP_ExternalAHRS::baro_data_message_t pkt;
 
