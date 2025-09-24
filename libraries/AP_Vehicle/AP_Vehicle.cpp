@@ -333,6 +333,7 @@ void AP_Vehicle::setup()
         sdcard_retry();
     }
 #endif
+    hal.console->print("schedi\n");
 
 #if AP_SCHEDULER_ENABLED
     // initialise the main loop scheduler
@@ -346,6 +347,8 @@ void AP_Vehicle::setup()
     // actual loop rate
     G_Dt = scheduler.get_loop_period_s();
 #endif
+
+    hal.console->print("schede\n");
 
     // this is here for Plane; its failsafe_check method requires the
     // RC channels to be set as early as possible for maximum
