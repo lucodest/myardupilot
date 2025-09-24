@@ -395,6 +395,7 @@ void AP_Vehicle::setup()
     // call externalAHRS init before init_ardupilot to allow for external sensors
     externalAHRS.init();
 //#endif
+    hal.console->print("eahrs\n");
 
 #if HAL_GENERATOR_ENABLED
     generator.init();

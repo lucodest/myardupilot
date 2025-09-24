@@ -21,6 +21,8 @@ LProt* LProt::instance() {
 }
 
 LProt::LProt() {
+    hal.console->print("linit\n");
+    
     pkt_buffer = new uint8_t[261];
 
     //Use serialmanager later
@@ -30,7 +32,7 @@ LProt::LProt() {
 
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
 
-    hal.console->print("linit\n");
+    hal.console->print("linite\n");
 }
 
 void AP_ExternalAHRS::init(void) {
