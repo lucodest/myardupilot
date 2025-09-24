@@ -333,7 +333,6 @@ void AP_Vehicle::setup()
         sdcard_retry();
     }
 #endif
-    hal.console->printf("schedi\n");
 
 #if AP_SCHEDULER_ENABLED
     // initialise the main loop scheduler
@@ -347,8 +346,6 @@ void AP_Vehicle::setup()
     // actual loop rate
     G_Dt = scheduler.get_loop_period_s();
 #endif
-
-    hal.console->printf("schede\n");
 
     // this is here for Plane; its failsafe_check method requires the
     // RC channels to be set as early as possible for maximum
@@ -398,7 +395,6 @@ void AP_Vehicle::setup()
     // call externalAHRS init before init_ardupilot to allow for external sensors
     externalAHRS.init();
 //#endif
-    hal.console->printf("eahrs\n");
 
 #if HAL_GENERATOR_ENABLED
     generator.init();

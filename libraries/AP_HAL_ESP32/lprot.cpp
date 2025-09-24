@@ -46,6 +46,7 @@ void LProt::update_thread(void) {
     uint8_t buf[128];
 
     while(true) {
+        hal.console->printf("l\n");
         
         uint32_t av = uart->available();
         if(av > 0) {
