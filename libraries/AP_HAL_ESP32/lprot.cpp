@@ -43,7 +43,7 @@ int8_t AP_ExternalAHRS::get_port(AvailableSensor sensor) const
 void LProt::update_thread(void) {
     uint8_t buf[128];
 
-    uart->begin(1000000, 512, 512);
+    uart->begin(115200, 512, 512);
 
     while(true) {
         uint32_t av = uart->available();
