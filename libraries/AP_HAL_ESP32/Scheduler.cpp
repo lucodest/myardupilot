@@ -136,6 +136,7 @@ void Scheduler::init()
     }
 
     LProt::instance();
+    hal.console->printf("lprot");
 
     //   xTaskCreatePinnedToCore(_print_profile, "APM_PROFILE", IO_SS, this, IO_PRIO, nullptr,SLOWCPU);
 }
