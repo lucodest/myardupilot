@@ -26,8 +26,6 @@ LProt::LProt() {
     //Use serialmanager later
     uart = hal.serial(2);
 
-    uart->begin(1000000, 512, 512);
-
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
 
     hal.console->printf("linite\n");
@@ -45,9 +43,9 @@ int8_t AP_ExternalAHRS::get_port(AvailableSensor sensor) const
 void LProt::update_thread(void) {
     uint8_t buf[128];
 
+    uart->begin(1000000, 512, 512);
+
     while(true) {
-        hal.console->printf("l\n");
-        
         uint32_t av = uart->available();
         if(av > 0) {
             hal.console->printf("inu\n");
