@@ -156,7 +156,7 @@
 
 //HARDWARE UARTS
 #define HAL_ESP32_UART_DEVICES \
-  {.port=UART_NUM_0, .rx=GPIO_NUM_3, .tx=GPIO_NUM_1 }, {.port=UART_NUM_1, .rx=GPIO_NUM_4, .tx=GPIO_NUM_2 }
+  {.port=UART_NUM_0, .rx=GPIO_NUM_3, .tx=GPIO_NUM_1 }, {.port=UART_NUM_1, .rx=GPIO_NUM_15, .tx=GPIO_NUM_13 }
 
 // #define AP_FILESYSTEM_ESP32_ENABLED 1
 
