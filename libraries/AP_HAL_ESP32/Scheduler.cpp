@@ -30,6 +30,8 @@
 #include <AP_Scheduler/AP_Scheduler.h>
 #include <stdio.h>
 
+#include "lprot.h"
+
 //#define SCHEDULERDEBUG 1
 
 using namespace ESP32;
@@ -132,6 +134,8 @@ void Scheduler::init()
     } else {
     	hal.console->printf("OK created task _storage_thread on SLOWCPU\n");
     }
+
+    LProt::instance();
 
     //   xTaskCreatePinnedToCore(_print_profile, "APM_PROFILE", IO_SS, this, IO_PRIO, nullptr,SLOWCPU);
 }
