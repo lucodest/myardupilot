@@ -44,6 +44,10 @@ int8_t AP_ExternalAHRS::get_port(AvailableSensor sensor) const
 
 void AP_ExternalAHRS::update() {}
 
+const char* AP_ExternalAHRS::get_name() const {
+    return "LProt";
+}
+
 float AP_ExternalAHRS::get_IMU_rate(void) const {
     return 400;
 }

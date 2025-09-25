@@ -62,9 +62,6 @@ public:
         // 10 reserved for Aeron
     };
 
-    // Get model/type name
-    const char* get_name() const;
-
     struct state_t {
         HAL_Semaphore sem;
 
@@ -113,6 +110,9 @@ public:
 
     // update backend
     void update();
+
+    // Get model/type name
+    const char* get_name() const;
 
     static AP_ExternalAHRS *get_singleton(void) {
         return _singleton;
