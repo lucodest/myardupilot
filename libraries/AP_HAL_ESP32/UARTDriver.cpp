@@ -65,7 +65,7 @@ void UARTDriver::_begin(uint32_t b, uint16_t rxS, uint16_t txS)
             _readbuf.set_size(RX_BUF_SIZE);
             _writebuf.set_size(TX_BUF_SIZE);
             _uart_owner_thd = xTaskGetCurrentTaskHandle();
-
+            hal.console->printf("initu\n");
             _initialized = true;
         } else {
             flush();
@@ -159,6 +159,7 @@ void IRAM_ATTR UARTDriver::read_data()
     do {
         count = uart_read_bytes(p, _buffer, sizeof(_buffer), 0);
         if (count > 0) {
+            hal.console->printf("udt\n");
             _readbuf.write(_buffer, count);
         }
     } while (count > 0);
