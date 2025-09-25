@@ -235,6 +235,7 @@ void LProt::handleMagData(MAG_DATA_t data) {
 }
 
 #define LSB_PER_G 8192.0f
+#define LSB_PER_DPS 131.2f
 
 void LProt::handleImuData(IMU_DATA_t data) {
     AP_ExternalAHRS::ins_data_message_t pkt;
@@ -242,6 +243,12 @@ void LProt::handleImuData(IMU_DATA_t data) {
     pkt.accel.x = (data.ax / LSB_PER_G) * GRAVITY_MSS;
     pkt.accel.y = (data.ay / LSB_PER_G) * GRAVITY_MSS;
     pkt.accel.z = (data.az / LSB_PER_G) * GRAVITY_MSS;
+
+    pkt.gyro.x = radians(data.gx / LSB_PER_DPS);
+    pkt.gyro.y = radians(data.gy / LSB_PER_DPS);
+    pkt.gyro.z = radians(data.gz / LSB_PER_DPS);
+
+    pkt.temperature = -300;
 
     AP::ins().handle_external(pkt);
 }
