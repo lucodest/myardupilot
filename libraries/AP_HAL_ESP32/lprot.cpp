@@ -27,8 +27,6 @@ LProt::LProt() {
     uart = hal.serial(2);
 
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
-
-    hal.console->printf("linite\n");
 }
 
 void AP_ExternalAHRS::init(void) {
@@ -48,8 +46,6 @@ void LProt::update_thread(void) {
     while(true) {
         uint32_t av = uart->available();
         if(av > 0) {
-            hal.console->printf("inu\n");
-
             av = av > 128 ? 128 : av;
             uart->read(buf, av);
             handleRx(buf, av);
@@ -204,8 +200,6 @@ void LProt::handleRcData(RC_DATA_t data) {
 }
 
 void LProt::handleBaroData(BARO_DATA_t data) {
-    hal.console->printf("gbp\n");
-
     AP_ExternalAHRS::baro_data_message_t pkt;
 
     pkt.pressure_pa = data.pressure;
