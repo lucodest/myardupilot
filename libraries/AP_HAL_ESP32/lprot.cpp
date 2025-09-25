@@ -5,6 +5,8 @@
 #include <AP_ExternalAHRS/AP_ExternalAHRS.h>
 #include <AP_Baro/AP_Baro.h>
 #include <AP_Compass/AP_Compass.h>
+#include <AP_InertialSensor/AP_InertialSensor.h>
+#include <AP_Math/AP_Math.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -216,4 +218,16 @@ void LProt::handleMagData(MAG_DATA_t data) {
     pkt.field.z = data.mag_z;
 
     AP::compass().handle_external(pkt);
+}
+
+#define LSB_PER_G 8192.0f
+
+void LProt::handleImuData(IMU_DATA_t data) {
+    AP_ExternalAHRS::ins_data_message_t pkt;
+
+    pkt.accel.x = (data.ax / LSB_PER_G) * GRAVITY_MSS;
+    pkt.accel.y = (data.ay / LSB_PER_G) * GRAVITY_MSS;
+    pkt.accel.z = (data.az / LSB_PER_G) * GRAVITY_MSS;
+
+    AP::ins().handle_external(pkt);
 }
