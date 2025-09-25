@@ -160,7 +160,6 @@ void IRAM_ATTR UARTDriver::read_data()
     do {
         count = uart_read_bytes(p, _buffer, sizeof(_buffer), 0);
         if (count > 0) {
-            hal.console->printf("udt\n");
             _readbuf.write(_buffer, count);
         }
     } while (count > 0);
