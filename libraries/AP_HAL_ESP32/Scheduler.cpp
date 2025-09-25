@@ -91,11 +91,11 @@ void Scheduler::init()
     	hal.console->printf("OK created task _main_thread on FASTCPU\n");
     }
 
-    if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
+    /* if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
          hal.console->printf("FAILED to create task _ahrs_thread on SLOWCPU\n");
     } else {
     	hal.console->printf("OK created task _ahrs_thread on SLOWCPU\n");
-    }
+    } */
 
     if (xTaskCreatePinnedToCore(_timer_thread, "APM_TIMER", TIMER_SS, this, TIMER_PRIO, &_timer_task_handle,FASTCPU) != pdPASS) {
         hal.console->printf("FAILED to create task _timer_thread on FASTCPU\n");
