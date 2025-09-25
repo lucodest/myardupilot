@@ -2,7 +2,7 @@
 
 #include <AP_ExternalAHRS/AP_ExternalAHRS.h>
 
-#if AP_EXTERNAL_AHRS_ENABLED
+#if AP_INS_EXTERNALAHRS_ENABLED
 
 #include "AP_InertialSensor.h"
 #include "AP_InertialSensor_Backend.h"
@@ -24,5 +24,5 @@ private:
     const uint8_t serial_port;
     bool started;
 };
-#endif // AP_EXTERNAL_AHRS_ENABLED
+#endif // AP_INS_EXTERNALAHRS_ENABLED
 

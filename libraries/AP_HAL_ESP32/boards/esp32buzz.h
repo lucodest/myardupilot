@@ -39,6 +39,7 @@
 
 //INS choices:
 //#define HAL_INS_DEFAULT HAL_INS_BMI160_SPI
+#define AP_INS_EXTERNALAHRS_ENABLED 1
 //#define HAL_INS_MPU9250_NAME "MPU9250"
 
 // or this:
