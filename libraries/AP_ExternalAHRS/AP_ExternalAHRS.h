@@ -62,11 +62,6 @@ public:
         // 10 reserved for Aeron
     };
 
-    // expected IMU rate in Hz
-    float get_IMU_rate(void) const {
-        return rate.get();
-    }
-
     // Get model/type name
     const char* get_name() const;
 
@@ -104,11 +99,20 @@ public:
     bool get_gyro(Vector3f &gyro);
     bool get_accel(Vector3f &accel);
     void send_status_report(class GCS_MAVLINK &link) const;
-    bool get_variances(float &velVar, float &posVar, float &hgtVar, Vector3f &magVar, float &tasVar) const;
+    bool get_variances(float &velVar, float &posVar, float &hgtVar, Vector3f &magVar, float &tasVar) const;    
+#endif  // AP_EXTERNAL_AHRS_ENABLED
+
+#if AP_EXTERNAL_AHRS_ENABLED
+    // expected IMU rate in Hz
+    float get_IMU_rate(void) const {
+        return rate.get();
+    }
+#else
+    float get_IMU_rate(void) const;
+#endif  // AP_EXTERNAL_AHRS_ENABLED
 
     // update backend
     void update();
-#endif  // AP_EXTERNAL_AHRS_ENABLED
 
     static AP_ExternalAHRS *get_singleton(void) {
         return _singleton;

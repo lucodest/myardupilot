@@ -31,6 +31,8 @@ LProt::LProt() {
     hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&LProt::update_thread, void), "LProt", 2048, AP_HAL::Scheduler::PRIORITY_SPI, 0);
 }
 
+//Implement missing methods in AP_ExternalAHRS
+
 void AP_ExternalAHRS::init(void) {
     LProt::instance();
 }
@@ -39,6 +41,14 @@ int8_t AP_ExternalAHRS::get_port(AvailableSensor sensor) const
 {
     return 2;
 };
+
+void AP_ExternalAHRS::update() {}
+
+float AP_ExternalAHRS::get_IMU_rate(void) const {
+    return 400;
+}
+
+//End
 
 void LProt::update_thread(void) {
     uint8_t buf[128];
