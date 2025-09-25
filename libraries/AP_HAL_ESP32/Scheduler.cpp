@@ -496,9 +496,9 @@ void IRAM_ATTR Scheduler::_uart_thread(void *arg)
     printf("%s:%d start \n", __PRETTY_FUNCTION__, __LINE__);
 #endif
     Scheduler *sched = (Scheduler *)arg;
-    while (!sched->_initialized) {
+    /* while (!sched->_initialized) {
         sched->delay_microseconds(2000);
-    }
+    } */
 #ifdef SCHEDDEBUG
     printf("%s:%d initialised\n", __PRETTY_FUNCTION__, __LINE__);
 #endif
