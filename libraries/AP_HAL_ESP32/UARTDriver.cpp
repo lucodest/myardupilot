@@ -148,6 +148,7 @@ void IRAM_ATTR UARTDriver::_timer_tick(void)
     if (!_initialized) {
         return;
     }
+    hal.console->printf("t\n");
     read_data();
     write_data();
 }
