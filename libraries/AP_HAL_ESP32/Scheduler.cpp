@@ -109,11 +109,11 @@ void Scheduler::init()
        hal.console->printf("OK created task _rcout_thread on SLOWCPU\n");
     }
 
-    if (xTaskCreatePinnedToCore(_rcin_thread, "APM_RCIN", RCIN_SS, this, RCIN_PRIO, &_rcin_task_handle,SLOWCPU) != pdPASS) {
+    /* if (xTaskCreatePinnedToCore(_rcin_thread, "APM_RCIN", RCIN_SS, this, RCIN_PRIO, &_rcin_task_handle,SLOWCPU) != pdPASS) {
        hal.console->printf("FAILED to create task _rcin_thread on SLOWCPU\n");
     } else {
        hal.console->printf("OK created task _rcin_thread on SLOWCPU\n");
-    }
+    } */
 
     // pin this thread to Core 1 as it keeps all teh uart/s feed data, and we need that quick.
     if (xTaskCreatePinnedToCore(_uart_thread, "APM_UART", UART_SS, this, UART_PRIO, &_uart_task_handle,FASTCPU) != pdPASS) {
@@ -385,7 +385,7 @@ void IRAM_ATTR Scheduler::_run_timers()
     _in_timer_proc = false;
 }
 
-void IRAM_ATTR Scheduler::_rcin_thread(void *arg)
+/* void IRAM_ATTR Scheduler::_rcin_thread(void *arg)
 {
     Scheduler *sched = (Scheduler *)arg;
     while (!_initialized) {
@@ -396,7 +396,7 @@ void IRAM_ATTR Scheduler::_rcin_thread(void *arg)
         sched->delay_microseconds(1000);
         ((RCInput *)hal.rcin)->_timer_tick();
     }
-}
+} */
 
 void IRAM_ATTR Scheduler::_run_io(void)
 {
