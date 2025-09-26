@@ -240,7 +240,7 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
     if (in_main_thread()) {
         uint64_t elapsed = AP_HAL::micros64() - ds;
         if(elapsed > us) {
-            hal.console->printf("dovr %lu e %lu\n",(uint32_t) elapsed, us);
+            hal.console->printf("dovr %lu e %u\n",(uint32_t) elapsed, us);
         }
     } 
 }
