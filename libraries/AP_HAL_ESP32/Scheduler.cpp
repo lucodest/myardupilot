@@ -80,7 +80,8 @@ void Scheduler::init()
 
     //Create timer for proper delay_microseconds()
     const esp_timer_create_args_t targ = {
-        .callback = _delay_cb
+        .callback = _delay_cb,
+        .arg = (void*) _main_task_handle
     };
     esp_timer_create(&targ, &delay_timer_handle);
 
@@ -218,7 +219,7 @@ bool Scheduler::thread_create(AP_HAL::MemberProc proc, const char *name, uint32_
 
 void IRAM_ATTR Scheduler::_delay_cb(void *arg) {
 
-    xTaskNotifyGive(_main_task_handle);
+    xTaskNotifyGive((TaskHandle_t) arg);
 }
 
 void IRAM_ATTR Scheduler::delay(uint16_t ms)
@@ -243,7 +244,7 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
         esp_timer_start_once(delay_timer_handle, us);
 
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        
+
     } else { // Minimum delay for FreeRTOS is 1ms
         uint32_t tick = portTICK_PERIOD_MS * 1000;
 
