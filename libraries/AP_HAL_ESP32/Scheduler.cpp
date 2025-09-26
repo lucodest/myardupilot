@@ -78,13 +78,6 @@ void Scheduler::init()
 
     hal.console->printf("%s:%d running with CONFIG_FREERTOS_HZ=%d\n", __PRETTY_FUNCTION__, __LINE__,CONFIG_FREERTOS_HZ);
 
-    //Create timer for proper delay_microseconds()
-    const esp_timer_create_args_t targ = {
-        .callback = _delay_cb,
-        .arg = (void*) _main_task_handle
-    };
-    esp_timer_create(&targ, &delay_timer_handle);
-
     // keep main tasks that need speed on CPU 0
     // pin potentially slow stuff to CPU 1, as we have disabled the WDT on that core.
     #define FASTCPU 0
@@ -97,6 +90,13 @@ void Scheduler::init()
     } else {
     	hal.console->printf("OK created task _main_thread on FASTCPU\n");
     }
+
+    //Create timer for proper delay_microseconds()
+    const esp_timer_create_args_t targ = {
+        .callback = _delay_cb,
+        .arg = (void*) _main_task_handle
+    };
+    esp_timer_create(&targ, &delay_timer_handle);
 
     /* if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
          hal.console->printf("FAILED to create task _ahrs_thread on SLOWCPU\n");
