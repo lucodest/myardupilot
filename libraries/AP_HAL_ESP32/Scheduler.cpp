@@ -225,6 +225,9 @@ void IRAM_ATTR Scheduler::delay(uint16_t ms)
 
 void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
 {
+    //Debug
+    uint64_t ds = AP_HAL::micros64();
+
     if (in_main_thread() && us < 100) {
         esp_rom_delay_us(us);
     } else { // Minimum delay for FreeRTOS is 1ms
@@ -232,6 +235,14 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
 
         vTaskDelay((us+tick-1)/tick);
     }
+
+    //Debug
+    if (in_main_thread()) {
+        uint64_t elapsed = AP_HAL::micros64() - ds;
+        if(elapsed > us) {
+            hal.console->printf("dovr %u e %u\n",(uint32_t) elapsed, us);
+        }
+    } 
 }
 
 void IRAM_ATTR Scheduler::register_timer_process(AP_HAL::MemberProc proc)
