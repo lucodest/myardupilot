@@ -78,6 +78,12 @@ void Scheduler::init()
 
     hal.console->printf("%s:%d running with CONFIG_FREERTOS_HZ=%d\n", __PRETTY_FUNCTION__, __LINE__,CONFIG_FREERTOS_HZ);
 
+    //Create timer for proper delay_microseconds()
+    const esp_timer_create_args_t targ = {
+        .callback = _delay_cb
+    };
+    esp_timer_create(&targ, &delay_timer_handle);
+
     // keep main tasks that need speed on CPU 0
     // pin potentially slow stuff to CPU 1, as we have disabled the WDT on that core.
     #define FASTCPU 0
@@ -210,11 +216,16 @@ bool Scheduler::thread_create(AP_HAL::MemberProc proc, const char *name, uint32_
     return true;
 }
 
+void IRAM_ATTR Scheduler::_delay_cb(void *arg) {
+
+    xTaskNotifyGive(_main_task_handle);
+}
+
 void IRAM_ATTR Scheduler::delay(uint16_t ms)
 {
     uint64_t start = AP_HAL::micros64();
     while ((AP_HAL::micros64() - start)/1000 < ms) {
-        delay_microseconds(1000);
+        vTaskDelay(1);
         if (_min_delay_cb_ms <= ms) {
             if (in_main_thread()) {
                 call_delay_cb();
@@ -228,8 +239,11 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
     //Debug
     uint64_t ds = AP_HAL::micros64();
 
-    if (in_main_thread() && us < 100) {
-        esp_rom_delay_us(us);
+    if (in_main_thread()) {
+        esp_timer_start_once(delay_timer_handle, us);
+
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        
     } else { // Minimum delay for FreeRTOS is 1ms
         uint32_t tick = portTICK_PERIOD_MS * 1000;
 

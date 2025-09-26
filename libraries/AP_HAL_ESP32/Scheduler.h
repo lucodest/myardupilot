@@ -20,6 +20,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_timer.h"
 
 #define ESP32_SCHEDULER_MAX_TIMER_PROCS 10
 #define ESP32_SCHEDULER_MAX_IO_PROCS 10
@@ -121,6 +122,9 @@ private:
     tskTaskControlBlock* _storage_task_handle;
 
     BinarySemaphore _ahrs_sem;
+
+    esp_timer_handle_t delay_timer_handle;
+    static void _delay_cb(void *arg);
 
     static void _main_thread(void *arg);
     static void _ahrs_thread(void *arg);
