@@ -218,8 +218,6 @@ bool Scheduler::thread_create(AP_HAL::MemberProc proc, const char *name, uint32_
 }
 
 void IRAM_ATTR Scheduler::_delay_cb(void *arg) {
-    //Debug
-    hal.console->printf("g\n");
 
     xTaskNotifyGive((TaskHandle_t) arg);
 }
@@ -240,7 +238,7 @@ void IRAM_ATTR Scheduler::delay(uint16_t ms)
 void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
 {
     //Debug
-    uint64_t ds = AP_HAL::micros64();
+    //uint64_t ds = AP_HAL::micros64();
 
     if (in_main_thread()) {
         if(esp_timer_start_once(delay_timer_handle, us) != ESP_OK) {
@@ -250,8 +248,6 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
         }
 
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        //Debug
-        hal.console->printf("r\n");
 
     } else { // Minimum delay for FreeRTOS is 1ms
         uint32_t tick = portTICK_PERIOD_MS * 1000;
@@ -260,12 +256,12 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
     }
 
     //Debug
-    if (in_main_thread()) {
+    /* if (in_main_thread()) {
         uint64_t elapsed = AP_HAL::micros64() - ds;
         if(elapsed > us) {
             hal.console->printf("dovr %lu e %u\n",(uint32_t) elapsed, us);
         }
-    } 
+    }  */
 }
 
 void IRAM_ATTR Scheduler::register_timer_process(AP_HAL::MemberProc proc)
