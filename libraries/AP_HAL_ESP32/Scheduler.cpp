@@ -260,7 +260,7 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
         uint64_t elapsed = AP_HAL::micros64() - ds;
         if(elapsed > us + 100) {
             hal.console->printf("dovr %lu e %u\n",(uint32_t) elapsed, us);
-            if(us >= 100) abort();
+            //if(us >= 100) abort();
         }
     } 
 }

@@ -2127,7 +2127,7 @@ check_sample:
     _delta_time = (now - _last_sample_usec) * 1.0e-6f;
     _last_sample_usec = now;
 
-#if 0
+#if 1
     {
         static uint64_t delta_time_sum;
         static uint16_t counter;
