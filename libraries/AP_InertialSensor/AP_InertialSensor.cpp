@@ -2119,7 +2119,7 @@ check_sample:
                 }
             }
 
-            hal.scheduler->delay_microseconds_boost(wait_per_loop);
+            //hal.scheduler->delay_microseconds_boost(wait_per_loop);
             wait_counter++;
         }
 
@@ -2127,7 +2127,7 @@ check_sample:
     _delta_time = (now - _last_sample_usec) * 1.0e-6f;
     _last_sample_usec = now;
 
-#if 1
+#if 0
     {
         static uint64_t delta_time_sum;
         static uint16_t counter;
