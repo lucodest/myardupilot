@@ -49,7 +49,7 @@ const char* AP_ExternalAHRS::get_name() const {
 }
 
 float AP_ExternalAHRS::get_IMU_rate(void) const {
-    return 400;
+    return 1000;
 }
 
 //End
