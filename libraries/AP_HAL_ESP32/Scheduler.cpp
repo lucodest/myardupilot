@@ -223,7 +223,8 @@ void IRAM_ATTR Scheduler::_delay_cb(void *arg) {
 
     vTaskNotifyGiveFromISR((TaskHandle_t) arg, &hptw);
 
-    esp_timer_isr_dispatch_need_yield();
+    //esp_timer_isr_dispatch_need_yield();
+    portYIELD_FROM_ISR(hptw);
 }
 
 void IRAM_ATTR Scheduler::delay(uint16_t ms)
