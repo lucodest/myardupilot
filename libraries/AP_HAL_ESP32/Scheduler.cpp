@@ -248,7 +248,7 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
             hal.console->printf("terr\n");
             return;
         }
-        
+
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     } else { // Minimum delay for FreeRTOS is 1ms
@@ -631,7 +631,9 @@ void IRAM_ATTR Scheduler::_main_thread(void *arg)
 #endif
     while (true) {
         sched->callbacks->loop();
-        vTaskDelay(1);
+
+        //vTaskDelay(1);
+        hal.scheduler->delay_microseconds(250);
 
         // run stats periodically
 //#ifdef SCHEDDEBUG
