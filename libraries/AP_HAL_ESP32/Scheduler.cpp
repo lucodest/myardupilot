@@ -94,7 +94,8 @@ void Scheduler::init()
     //Create timer for proper delay_microseconds()
     const esp_timer_create_args_t targ = {
         .callback = _delay_cb,
-        .arg = (void*) _main_task_handle
+        .arg = (void*) _main_task_handle,
+        .dispatch_method = ESP_TIMER_ISR
     };
     esp_timer_create(&targ, &delay_timer_handle);
 
@@ -218,8 +219,11 @@ bool Scheduler::thread_create(AP_HAL::MemberProc proc, const char *name, uint32_
 }
 
 void IRAM_ATTR Scheduler::_delay_cb(void *arg) {
+    BaseType_t hptw;
 
-    xTaskNotifyGive((TaskHandle_t) arg);
+    vTaskNotifyGiveFromISR((TaskHandle_t) arg, &hptw);
+
+    esp_timer_isr_dispatch_need_yield();
 }
 
 void IRAM_ATTR Scheduler::delay(uint16_t ms)
