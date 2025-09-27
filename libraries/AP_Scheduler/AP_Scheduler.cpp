@@ -261,7 +261,7 @@ void IRAM_ATTR AP_Scheduler::run(uint32_t time_available)
         }
 
         // run it
-        _task_time_started = AP_HAL::micros();
+        _task_time_started = now;
         hal.util->persistent_data.scheduler_task = i;
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
         fill_nanf_stack();

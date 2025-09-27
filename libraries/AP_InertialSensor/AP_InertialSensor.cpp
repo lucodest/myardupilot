@@ -2119,7 +2119,7 @@ check_sample:
                 }
             }
 
-            //hal.scheduler->delay_microseconds_boost(wait_per_loop);
+            hal.scheduler->delay_microseconds_boost(wait_per_loop);
             wait_counter++;
         }
 
