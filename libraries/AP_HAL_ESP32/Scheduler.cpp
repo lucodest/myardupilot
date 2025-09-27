@@ -243,7 +243,7 @@ void IRAM_ATTR Scheduler::delay(uint16_t ms)
 void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
 {
     //Debug
-    uint64_t ds;
+    uint64_t ds = 0;
 
     if (in_main_thread()) {
         if(esp_timer_start_once(delay_timer_handle, us) != ESP_OK) {
