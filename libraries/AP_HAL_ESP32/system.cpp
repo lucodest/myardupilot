@@ -35,22 +35,22 @@ void panic(const char *errormsg, ...)
     while (1) {}
 }
 
-uint32_t micros()
+uint32_t IRAM_ATTR micros()
 {
     return micros64();
 }
 
-uint32_t millis()
+uint32_t IRAM_ATTR millis()
 {
     return millis64();
 }
 
-uint64_t micros64()
+uint64_t IRAM_ATTR micros64()
 {
     return esp_timer_get_time();
 }
 
-uint64_t millis64()
+uint64_t IRAM_ATTR millis64()
 {
     return uint64_div1000(micros64());
 }
