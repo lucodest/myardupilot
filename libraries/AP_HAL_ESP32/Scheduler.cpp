@@ -551,11 +551,11 @@ uint16_t IRAM_ATTR Scheduler::get_loop_rate_hz(void)
     return _active_loop_rate_hz;
 }
 
-// once every 60 seconds, print some stats...
+// once every 15 seconds, print some stats...
 void Scheduler::print_stats(void)
 {
     static int64_t last_run = 0;
-    if (AP_HAL::millis64() - last_run > 60000) {
+    if (AP_HAL::millis64() - last_run > 15000) {
         char buffer[1024];
         vTaskGetRunTimeStats(buffer);
         printf("\n\n%s\n", buffer);
@@ -622,10 +622,10 @@ void IRAM_ATTR Scheduler::_main_thread(void *arg)
         vTaskDelay(1);
 
         // run stats periodically
-#ifdef SCHEDDEBUG
+//#ifdef SCHEDDEBUG
         sched->print_stats();
-#endif
-        sched->print_main_loop_rate();
+//#endif
+        //sched->print_main_loop_rate();
 
         if (ESP_OK != esp_task_wdt_reset()) {
             printf("esp_task_wdt_reset() failed\n");
