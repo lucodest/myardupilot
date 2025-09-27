@@ -261,7 +261,7 @@ void IRAM_ATTR AP_Scheduler::run(uint32_t time_available)
         }
 
         // run it
-        _task_time_started = now;
+        _task_time_started = AP_HAL::micros();
         hal.util->persistent_data.scheduler_task = i;
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
         fill_nanf_stack();
@@ -278,7 +278,7 @@ void IRAM_ATTR AP_Scheduler::run(uint32_t time_available)
         uint32_t time_taken = now - _task_time_started;
 
         //Debug
-        if (task.priority <= MAX_FAST_TASK_PRIORITIES && _tick_counter % 5 == 0) {
+        if (task.priority <= MAX_FAST_TASK_PRIORITIES && _tick_counter % 400 == 0) {
             //Fast task
             hal.console->printf("%s %luus\n", task.name, time_taken);
         }
