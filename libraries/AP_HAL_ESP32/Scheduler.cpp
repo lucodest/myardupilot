@@ -223,8 +223,7 @@ void IRAM_ATTR Scheduler::_delay_cb(void *arg) {
 
     vTaskNotifyGiveFromISR((TaskHandle_t) arg, &hptw);
 
-    //esp_timer_isr_dispatch_need_yield();
-    portYIELD_FROM_ISR(hptw);
+    esp_timer_isr_dispatch_need_yield();
 }
 
 void IRAM_ATTR Scheduler::delay(uint16_t ms)
@@ -268,6 +267,24 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
             //if(us >= 100) abort();
         }
     } 
+}
+
+void IRAM_ATTR Scheduler::delay_microseconds_boost(uint16_t usec)
+{
+    if (!_priority_boosted && in_main_thread()) {
+        vTaskPrioritySet(NULL, Scheduler::MAIN_PRIO + 1);
+        _priority_boosted = true;
+        _called_boost = true;
+    }
+    delay_microseconds(usec); //Suspends Thread for desired microseconds
+}
+
+void IRAM_ATTR Scheduler::boost_end(void)
+{
+    if (in_main_thread() && _priority_boosted) {
+        _priority_boosted = false;
+        vTaskPrioritySet(NULL, Scheduler::MAIN_PRIO);
+    }
 }
 
 void IRAM_ATTR Scheduler::register_timer_process(AP_HAL::MemberProc proc)
