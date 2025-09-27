@@ -243,7 +243,7 @@ void IRAM_ATTR Scheduler::delay(uint16_t ms)
 void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
 {
     //Debug
-    uint64_t ds = AP_HAL::micros64();
+    uint64_t ds;
 
     if (in_main_thread()) {
         if(esp_timer_start_once(delay_timer_handle, us) != ESP_OK) {
@@ -251,7 +251,7 @@ void IRAM_ATTR Scheduler::delay_microseconds(uint16_t us)
             hal.console->printf("terr\n");
             return;
         }
-
+        ds = AP_HAL::micros64();
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     } else { // Minimum delay for FreeRTOS is 1ms
