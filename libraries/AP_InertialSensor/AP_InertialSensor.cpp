@@ -2007,7 +2007,7 @@ void AP_InertialSensor::update(void)
   delays occur we need to cope with them. The long term sum of
   _delta_time should be exactly equal to the wall clock elapsed time
  */
-void IRAM_ATTR AP_InertialSensor::wait_for_sample(void)
+void AP_InertialSensor::wait_for_sample(void)
 {
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     auto *sitl = AP::sitl();
