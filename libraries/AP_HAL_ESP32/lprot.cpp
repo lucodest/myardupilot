@@ -54,7 +54,7 @@ float AP_ExternalAHRS::get_IMU_rate(void) const {
 
 //End
 
-void LProt::update_thread(void) {
+void IRAM_ATTR LProt::update_thread(void) {
     uint8_t buf[128];
 
     uart->begin(1000000, 512, 512);
@@ -124,7 +124,7 @@ uint16_t LProt::calculateCrc(uint8_t* data, uint16_t len) {
     return crc;
 }
 
-void LProt::handleRx(uint8_t* data, uint16_t len){
+void IRAM_ATTR LProt::handleRx(uint8_t* data, uint16_t len){
 
     for(uint16_t i = 0; i < len; i++){
         pkt_buffer[pkt_index] = data[i];

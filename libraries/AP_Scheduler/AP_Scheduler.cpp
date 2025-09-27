@@ -187,7 +187,7 @@ static void fill_nanf_stack(void)
   run one tick
   this will run as many scheduler tasks as we can in the specified time
  */
-void AP_Scheduler::run(uint32_t time_available)
+void IRAM_ATTR AP_Scheduler::run(uint32_t time_available)
 {
     uint32_t run_started_usec = AP_HAL::micros();
     uint32_t now = run_started_usec;
@@ -344,7 +344,7 @@ float AP_Scheduler::load_average()
     return constrain_float(used_time / (float)loop_us, 0, 1);
 }
 
-void AP_Scheduler::loop()
+void IRAM_ATTR AP_Scheduler::loop()
 {
     // wait for an INS sample
     hal.util->persistent_data.scheduler_task = -3;
