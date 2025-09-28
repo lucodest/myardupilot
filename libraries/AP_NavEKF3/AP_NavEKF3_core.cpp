@@ -624,7 +624,7 @@ void NavEKF3_core::CovarianceInit()
 *                 UPDATE FUNCTIONS                      *
 ********************************************************/
 // Update Filter States - this should be called whenever new IMU data is available
-void NavEKF3_core::UpdateFilter(bool predict)
+void IRAM_ATTR NavEKF3_core::UpdateFilter(bool predict)
 {
     // don't run filter updates if states have not been initialised
     if (!statesInitialised) {
@@ -725,12 +725,12 @@ void NavEKF3_core::UpdateFilter(bool predict)
     }
 }
 
-void NavEKF3_core::correctDeltaAngle(Vector3F &delAng, ftype delAngDT, uint8_t gyro_index)
+void IRAM_ATTR NavEKF3_core::correctDeltaAngle(Vector3F &delAng, ftype delAngDT, uint8_t gyro_index)
 {
     delAng -= inactiveBias[gyro_index].gyro_bias * (delAngDT / dtEkfAvg);
 }
 
-void NavEKF3_core::correctDeltaVelocity(Vector3F &delVel, ftype delVelDT, uint8_t accel_index)
+void IRAM_ATTR NavEKF3_core::correctDeltaVelocity(Vector3F &delVel, ftype delVelDT, uint8_t accel_index)
 {
     delVel -= inactiveBias[accel_index].accel_bias * (delVelDT / dtEkfAvg);
 }
@@ -742,7 +742,7 @@ void NavEKF3_core::correctDeltaVelocity(Vector3F &delVel, ftype delVelDT, uint8_
  * the vehicle when each observation is fused. This attitude error is then used to correct
  * the quaternion.
 */
-void NavEKF3_core::UpdateStrapdownEquationsNED()
+void IRAM_ATTR NavEKF3_core::UpdateStrapdownEquationsNED()
 {
     // update the quaternion states by rotating from the previous attitude through
     // the delta angle rotation quaternion and normalise
@@ -818,7 +818,7 @@ void NavEKF3_core::UpdateStrapdownEquationsNED()
  * "Recursive Attitude Estimation in the Presence of Multi-rate and Multi-delay Vector Measurements"
  * A Khosravian, J Trumpf, R Mahony, T Hamel, Australian National University
 */
-void NavEKF3_core::calcOutputStates()
+void IRAM_ATTR NavEKF3_core::calcOutputStates()
 {
     // apply corrections to the IMU data
     Vector3F delAngNewCorrected = imuDataNew.delAng;
@@ -1007,7 +1007,7 @@ void NavEKF3_core::calcOutputStates()
  * Argument rotVarVecPtr is pointer to a vector defining the earth frame uncertainty variance of the quaternion states
  * used to perform a reset of the quaternion state covariances only. Set to null for normal operation.
 */
-void NavEKF3_core::CovariancePrediction(Vector3F *rotVarVecPtr)
+void IRAM_ATTR NavEKF3_core::CovariancePrediction(Vector3F *rotVarVecPtr)
 {
     ftype daxVar;       // X axis delta angle noise variance rad^2
     ftype dayVar;       // Y axis delta angle noise variance rad^2
@@ -1798,7 +1798,7 @@ void NavEKF3_core::CovariancePrediction(Vector3F *rotVarVecPtr)
 }
 
 // zero specified range of rows in the state covariance matrix
-void NavEKF3_core::zeroRows(Matrix24 &covMat, uint8_t first, uint8_t last)
+void IRAM_ATTR NavEKF3_core::zeroRows(Matrix24 &covMat, uint8_t first, uint8_t last)
 {
     uint8_t row;
     for (row=first; row<=last; row++)
@@ -1808,7 +1808,7 @@ void NavEKF3_core::zeroRows(Matrix24 &covMat, uint8_t first, uint8_t last)
 }
 
 // zero specified range of columns in the state covariance matrix
-void NavEKF3_core::zeroCols(Matrix24 &covMat, uint8_t first, uint8_t last)
+void IRAM_ATTR NavEKF3_core::zeroCols(Matrix24 &covMat, uint8_t first, uint8_t last)
 {
     uint8_t row;
     for (row=0; row<=23; row++)
@@ -1818,7 +1818,7 @@ void NavEKF3_core::zeroCols(Matrix24 &covMat, uint8_t first, uint8_t last)
 }
 
 // reset the output data to the current EKF state
-void NavEKF3_core::StoreOutputReset()
+void IRAM_ATTR NavEKF3_core::StoreOutputReset()
 {
     outputDataNew.quat = stateStruct.quat;
     outputDataNew.velocity = stateStruct.velocity;
@@ -1834,7 +1834,7 @@ void NavEKF3_core::StoreOutputReset()
 }
 
 // Reset the stored output quaternion history to current EKF state
-void NavEKF3_core::StoreQuatReset()
+void IRAM_ATTR NavEKF3_core::StoreQuatReset()
 {
     outputDataNew.quat = stateStruct.quat;
     // write current measurement to entire table
@@ -1845,7 +1845,7 @@ void NavEKF3_core::StoreQuatReset()
 }
 
 // Rotate the stored output quaternion history through a quaternion rotation
-void NavEKF3_core::StoreQuatRotate(const QuaternionF &deltaQuat)
+void IRAM_ATTR NavEKF3_core::StoreQuatRotate(const QuaternionF &deltaQuat)
 {
     outputDataNew.quat = outputDataNew.quat*deltaQuat;
     // write current measurement to entire table
@@ -1856,7 +1856,7 @@ void NavEKF3_core::StoreQuatRotate(const QuaternionF &deltaQuat)
 }
 
 // force symmetry on the covariance matrix to prevent ill-conditioning
-void NavEKF3_core::ForceSymmetry()
+void IRAM_ATTR NavEKF3_core::ForceSymmetry()
 {
     for (uint8_t i=1; i<=stateIndexLim; i++)
     {
@@ -1871,7 +1871,7 @@ void NavEKF3_core::ForceSymmetry()
 
 // constrain variances (diagonal terms) in the state covariance matrix to  prevent ill-conditioning
 // if states are inactive, zero the corresponding off-diagonals
-void NavEKF3_core::ConstrainVariances()
+void IRAM_ATTR NavEKF3_core::ConstrainVariances()
 {
     // Covariance constraints as of March 2025
     // This table assumes normal operations, there are additional constraints for specific failure modes like "badIMUdata" and "inhibitDelAngBiasStates".
@@ -1994,7 +1994,7 @@ void NavEKF3_core::ConstrainVariances()
 }
 
 // constrain states using WMM tables and specified limit
-void NavEKF3_core::MagTableConstrain(void)
+void IRAM_ATTR NavEKF3_core::MagTableConstrain(void)
 {
     // constrain to error from table earth field
     ftype limit_ga = frontend->_mag_ef_limit * 0.001f;
@@ -2010,7 +2010,7 @@ void NavEKF3_core::MagTableConstrain(void)
 }
 
 // constrain states to prevent ill-conditioning
-void NavEKF3_core::ConstrainStates()
+void IRAM_ATTR NavEKF3_core::ConstrainStates()
 {
     // State constraints as of March 2025
     // This table documents the limits applied to each EKF state.
@@ -2060,7 +2060,7 @@ void NavEKF3_core::ConstrainStates()
 }
 
 // calculate the NED earth spin vector in rad/sec
-void NavEKF3_core::calcEarthRateNED(Vector3F &omega, int32_t latitude) const
+void IRAM_ATTR NavEKF3_core::calcEarthRateNED(Vector3F &omega, int32_t latitude) const
 {
     ftype lat_rad = radians(latitude*1.0e-7f);
     omega.x  = earthRate*cosF(lat_rad);
@@ -2069,7 +2069,7 @@ void NavEKF3_core::calcEarthRateNED(Vector3F &omega, int32_t latitude) const
 }
 
 // set yaw from a single magnetometer sample
-void NavEKF3_core::setYawFromMag()
+void IRAM_ATTR NavEKF3_core::setYawFromMag()
 {
     if (!use_compass()) {
         return;
@@ -2104,7 +2104,7 @@ void NavEKF3_core::setYawFromMag()
 }
 
 // update mag field states and associated variances using magnetomer and declination data
-void NavEKF3_core::resetMagFieldStates()
+void IRAM_ATTR NavEKF3_core::resetMagFieldStates()
 {
     // Rotate Mag measurements into NED to set initial NED magnetic field states
 
@@ -2134,7 +2134,7 @@ void NavEKF3_core::resetMagFieldStates()
 }
 
 // zero the attitude covariances, but preserve the variances
-void NavEKF3_core::zeroAttCovOnly()
+void IRAM_ATTR NavEKF3_core::zeroAttCovOnly()
 {
     ftype varTemp[4];
     for (uint8_t index=0; index<=3; index++) {
@@ -2148,7 +2148,7 @@ void NavEKF3_core::zeroAttCovOnly()
 }
 
 // calculate the tilt error variance
-void NavEKF3_core::calcTiltErrorVariance()
+void IRAM_ATTR NavEKF3_core::calcTiltErrorVariance()
 {
     const ftype &q0 = stateStruct.quat[0];
     const ftype &q1 = stateStruct.quat[1];
@@ -2193,7 +2193,7 @@ void NavEKF3_core::calcTiltErrorVariance()
     tiltErrorVariance = constrain_ftype(tiltErrorVariance, 0.0f, sq(radians(30.0f)));
 }
 
-void NavEKF3_core::bestRotationOrder(rotationOrder &order)
+void IRAM_ATTR NavEKF3_core::bestRotationOrder(rotationOrder &order)
 {
     if (fabsF(prevTnb[2][0]) < fabsF(prevTnb[2][1])) {
         // rolled more than pitched so use 321 sequence
@@ -2207,7 +2207,7 @@ void NavEKF3_core::bestRotationOrder(rotationOrder &order)
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
 // calculate the tilt error variance using an alternative numerical difference technique
 // and log with value generated by NavEKF3_core::calcTiltErrorVariance()
-void NavEKF3_core::verifyTiltErrorVariance()
+void IRAM_ATTR NavEKF3_core::verifyTiltErrorVariance()
 {
 #if HAL_LOGGING_ENABLED
     const Vector3f gravity_ef = Vector3f(0.0f,0.0f,1.0f);
@@ -2258,7 +2258,7 @@ void NavEKF3_core::verifyTiltErrorVariance()
   By moving the EKF origin we keep the distortion due to spherical
   shape of the earth to a minimum.
  */
-void NavEKF3_core::moveEKFOrigin(void)
+void IRAM_ATTR NavEKF3_core::moveEKFOrigin(void)
 {
     // only move origin when we have a origin and we're using GPS
     if (!frontend->common_origin_valid || !filterStatus.flags.using_gps) {
