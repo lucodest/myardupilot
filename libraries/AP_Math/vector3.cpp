@@ -307,7 +307,7 @@ void Vector3<T>::rotate_xy(T angle_rad)
 
 // vector cross product
 template <typename T>
-Vector3<T> IRAM_ATTR Vector3<T>::operator %(const Vector3<T> &v) const
+Vector3<T> Vector3<T>::operator %(const Vector3<T> &v) const
 {
     Vector3<T> temp(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
     return temp;
@@ -315,13 +315,13 @@ Vector3<T> IRAM_ATTR Vector3<T>::operator %(const Vector3<T> &v) const
 
 // dot product
 template <typename T>
-T IRAM_ATTR Vector3<T>::operator *(const Vector3<T> &v) const
+T Vector3<T>::operator *(const Vector3<T> &v) const
 {
     return x*v.x + y*v.y + z*v.z;
 }
 
 template <typename T>
-T IRAM_ATTR Vector3<T>::length(void) const
+T Vector3<T>::length(void) const
 {
     return norm(x, y, z);
 }
@@ -340,21 +340,21 @@ bool Vector3<T>::limit_length_xy(T max_length)
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR &Vector3<T>::operator *=(const T num)
+Vector3<T> &Vector3<T>::operator *=(const T num)
 {
     x*=num; y*=num; z*=num;
     return *this;
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR &Vector3<T>::operator /=(const T num)
+Vector3<T> &Vector3<T>::operator /=(const T num)
 {
     x /= num; y /= num; z /= num;
     return *this;
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR &Vector3<T>::operator -=(const Vector3<T> &v)
+Vector3<T> &Vector3<T>::operator -=(const Vector3<T> &v)
 {
     x -= v.x; y -= v.y; z -= v.z;
     return *this;
@@ -373,50 +373,50 @@ bool Vector3<T>::is_inf(void) const
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR &Vector3<T>::operator +=(const Vector3<T> &v)
+Vector3<T> &Vector3<T>::operator +=(const Vector3<T> &v)
 {
     x+=v.x; y+=v.y; z+=v.z;
     return *this;
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR Vector3<T>::operator /(const T num) const
+Vector3<T> Vector3<T>::operator /(const T num) const
 {
     return Vector3<T>(x/num, y/num, z/num);
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR Vector3<T>::operator *(const T num) const
+Vector3<T> Vector3<T>::operator *(const T num) const
 {
     return Vector3<T>(x*num, y*num, z*num);
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR Vector3<T>::operator -(const Vector3<T> &v) const
+Vector3<T> Vector3<T>::operator -(const Vector3<T> &v) const
 {
     return Vector3<T>(x-v.x, y-v.y, z-v.z);
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR Vector3<T>::operator +(const Vector3<T> &v) const
+Vector3<T> Vector3<T>::operator +(const Vector3<T> &v) const
 {
     return Vector3<T>(x+v.x, y+v.y, z+v.z);
 }
 
 template <typename T>
-Vector3<T> IRAM_ATTR Vector3<T>::operator -(void) const
+Vector3<T> Vector3<T>::operator -(void) const
 {
     return Vector3<T>(-x,-y,-z);
 }
 
 template <typename T>
-bool IRAM_ATTR Vector3<T>::operator ==(const Vector3<T> &v) const
+bool Vector3<T>::operator ==(const Vector3<T> &v) const
 {
     return (is_equal(x,v.x) && is_equal(y,v.y) && is_equal(z,v.z));
 }
 
 template <typename T>
-bool IRAM_ATTR Vector3<T>::operator !=(const Vector3<T> &v) const
+bool Vector3<T>::operator !=(const Vector3<T> &v) const
 {
     return (!is_equal(x,v.x) || !is_equal(y,v.y) || !is_equal(z,v.z));
 }
