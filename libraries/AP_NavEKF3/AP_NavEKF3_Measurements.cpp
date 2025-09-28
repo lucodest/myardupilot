@@ -297,7 +297,7 @@ void NavEKF3_core::tryChangeCompass(uint8_t mag_index)
 }
 
 // check for new magnetometer data and update store measurements if available
-void NavEKF3_core::readMagData()
+void IRAM_ATTR NavEKF3_core::readMagData()
 {
     const auto &compass = dal.compass();
 
@@ -392,7 +392,7 @@ void NavEKF3_core::readMagData()
  *  Downsampling is done using a method that does not introduce coning or sculling
  *  errors.
  */
-void NavEKF3_core::readIMUData(bool startPredictEnabled)
+void IRAM_ATTR NavEKF3_core::readIMUData(bool startPredictEnabled)
 {
     const auto &ins = dal.ins();
 

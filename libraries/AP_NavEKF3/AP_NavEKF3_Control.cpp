@@ -756,7 +756,7 @@ void NavEKF3_core::checkGyroCalStatus(void)
 }
 
 // Update the filter status
-void  NavEKF3_core::updateFilterStatus(void)
+void IRAM_ATTR NavEKF3_core::updateFilterStatus(void)
 {
     // init return value
     nav_filter_status status;

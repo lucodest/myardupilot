@@ -271,7 +271,7 @@ void NavEKF3_core::SelectBetaDragFusion()
  * The script file used to generate these and other equations in this filter can be found here:
  * https://github.com/PX4/ecl/blob/master/matlab/scripts/Inertial%20Nav%20EKF/GenerateNavFilterEquations.m
 */
-void NavEKF3_core::FuseSideslip()
+void IRAM_ATTR NavEKF3_core::FuseSideslip()
 {
     // declarations
     const ftype R_BETA = 0.03f; // assume a sideslip angle RMS of ~10 deg
@@ -472,7 +472,7 @@ void NavEKF3_core::FuseSideslip()
  * See derivation/generate_2.py for derivation
  * Output for change reference: derivation/generated/acc_bf_generated.cpp
 */
-void NavEKF3_core::FuseDragForces()
+void IRAM_ATTR NavEKF3_core::FuseDragForces()
 {
     // drag model parameters
     const ftype bcoef_x = frontend->_ballisticCoef_x.get();

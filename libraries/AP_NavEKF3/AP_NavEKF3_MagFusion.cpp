@@ -224,7 +224,7 @@ void NavEKF3_core::alignYawAngle(const yaw_elements &yawAngData)
 ********************************************************/
 
 // select fusion of magnetometer data
-void NavEKF3_core::SelectMagFusion()
+void IRAM_ATTR NavEKF3_core::SelectMagFusion()
 {
     // clear the flag that lets other processes know that the expensive magnetometer fusion operation has been performed on that time step
     // used for load levelling
@@ -470,7 +470,7 @@ void NavEKF3_core::SelectMagFusion()
  * The script file used to generate these and other equations in this filter can be found here:
  * https://github.com/PX4/ecl/blob/master/matlab/scripts/Inertial%20Nav%20EKF/GenerateNavFilterEquations.m
 */
-void NavEKF3_core::FuseMagnetometer()
+void IRAM_ATTR NavEKF3_core::FuseMagnetometer()
 {
     // perform sequential fusion of magnetometer measurements.
     // this assumes that the errors in the different components are
@@ -917,7 +917,7 @@ void NavEKF3_core::FuseMagnetometer()
  * derivation/generate_2.py with output recorded in derivation/generated/yaw_generated.cpp
  * Returns true if the fusion was successful
 */
-bool NavEKF3_core::fuseEulerYaw(yawFusionMethod method)
+bool IRAM_ATTR NavEKF3_core::fuseEulerYaw(yawFusionMethod method)
 {
     const ftype &q0 = stateStruct.quat[0];
     const ftype &q1 = stateStruct.quat[1];
@@ -1256,7 +1256,7 @@ bool NavEKF3_core::fuseEulerYaw(yawFusionMethod method)
  * This is used to prevent the declination of the EKF earth field states from drifting during operation without GPS
  * or some other absolute position or velocity reference
 */
-void NavEKF3_core::FuseDeclination(ftype declErr)
+void IRAM_ATTR NavEKF3_core::FuseDeclination(ftype declErr)
 {
     // declination error variance (rad^2)
     const ftype R_DECL = sq(declErr);
