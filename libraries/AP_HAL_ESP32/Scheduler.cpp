@@ -25,10 +25,12 @@
 
 #include "esp_task_wdt.h"
 
+//Find a better solution for getting the gcs
+#include "Copter.h"
+
 #include <AP_HAL/AP_HAL.h>
 #include <AP_AHRS/AP_AHRS.h>
 #include <AP_Scheduler/AP_Scheduler.h>
-#include <GCS_MAVLink/GCS.h>
 #include <stdio.h>
 
 #include "lprot.h"
@@ -100,7 +102,7 @@ void Scheduler::init()
     };
     esp_timer_create(&targ, &delay_timer_handle);
 
-    if (xTaskCreatePinnedToCore(_gcs_thread, "APM_GCS", Scheduler::TIMER_SS, NULL, Scheduler::WIFI_PRIO1, &_gcs_task_handle,FASTCPU) != pdPASS) {
+    if (xTaskCreatePinnedToCore(_gcs_thread, "APM_GCS", TIMER_SS, NULL, WIFI_PRIO1, &_gcs_task_handle,FASTCPU) != pdPASS) {
          hal.console->printf("FAILED to create task _gcs_thread on FASTCPU\n");
     } else {
     	hal.console->printf("OK created task _gcs_thread on FASTCPU\n");
