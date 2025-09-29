@@ -219,7 +219,7 @@ void NavEKF3_core::SelectTasFusion()
 // synthetic sidelip fusion only works for fixed wing aircraft and relies on the average sideslip being close to zero
 // body frame drag only works for bluff body multi rotor vehices with thrust forces aligned with the Z axis
 // it requires a stable wind for best results and should not be used for aerobatic flight
-void NavEKF3_core::SelectBetaDragFusion()
+void IRAM_ATTR NavEKF3_core::SelectBetaDragFusion()
 {
     // Check if the magnetometer has been fused on that time step and the filter is running at faster than 200 Hz
     // If so, don't fuse measurements on this time step to reduce frame over-runs
