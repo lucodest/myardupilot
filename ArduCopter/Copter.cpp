@@ -122,7 +122,11 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
     FAST_TASK(heli_update_autorotation),
 #endif //HELI_FRAME
     // send outputs to the motors library immediately
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    FAST_TASK(mo_signal),
+#else
     FAST_TASK(motors_output_main),
+#endif
      // run EKF state estimator (expensive)
     FAST_TASK(read_AHRS),
 #if FRAME_CONFIG == HELI_FRAME
@@ -907,19 +911,18 @@ void Copter::read_AHRS(void)
 }
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-void Copter::gcs_update()
+void Copter::mo_update()
 {
     while(true) {
-        copter.gcs_sem.wait_blocking();
+        mo_sem.wait_blocking();
 
-        copter._gcs.update_send();
-        copter._gcs.update_receive();
+        motors_output_main();
     }
 }
 
-void Copter::gcs_signal()
+void Copter::mo_signal()
 {
-    copter.gcs_sem.signal();
+    mo_sem.signal();
 }
 #endif
 
