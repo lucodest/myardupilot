@@ -910,7 +910,7 @@ void Copter::read_AHRS(void)
 void Copter::gcs_update()
 {
     while(true) {
-        gcs_sem->wait_blocking();
+        gcs_sem.wait_blocking();
 
         gcs().update_receive();
         gcs().update_send();
