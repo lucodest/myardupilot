@@ -912,9 +912,8 @@ void Copter::gcs_update()
     while(true) {
         copter.gcs_sem.wait_blocking();
 
-        copter._gcs.update_receive();
-        hal.scheduler->delay(1);
         copter._gcs.update_send();
+        copter._gcs.update_receive();
     }
 }
 
