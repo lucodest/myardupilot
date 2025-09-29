@@ -727,7 +727,7 @@ private:
     bool get_rate_ef_targets(Vector3f& rate_ef_targets) const override;
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-    BinarySemaphore gcs_sem;
+    AP_HAL::BinarySemaphore gcs_sem;
     void gcs_update();
 #endif
 
