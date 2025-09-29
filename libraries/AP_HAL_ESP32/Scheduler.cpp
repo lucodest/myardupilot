@@ -28,6 +28,7 @@
 #include <AP_HAL/AP_HAL.h>
 #include <AP_AHRS/AP_AHRS.h>
 #include <AP_Scheduler/AP_Scheduler.h>
+#include <GCS_MAVLink/GCS.h>
 #include <stdio.h>
 
 #include "lprot.h"
@@ -99,11 +100,11 @@ void Scheduler::init()
     };
     esp_timer_create(&targ, &delay_timer_handle);
 
-    /* if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,FASTCPU) != pdPASS) {
-         hal.console->printf("FAILED to create task _ahrs_thread on FASTCPU\n");
+    if (xTaskCreatePinnedToCore(_gcs_thread, "APM_GCS", Scheduler::TIMER_SS, NULL, Scheduler::WIFI_PRIO1, &_gcs_task_handle,FASTCPU) != pdPASS) {
+         hal.console->printf("FAILED to create task _gcs_thread on FASTCPU\n");
     } else {
-    	hal.console->printf("OK created task _ahrs_thread on FASTCPU\n");
-    } */
+    	hal.console->printf("OK created task _gcs_thread on FASTCPU\n");
+    }
 
     if (xTaskCreatePinnedToCore(_timer_thread, "APM_TIMER", TIMER_SS, this, TIMER_PRIO, &_timer_task_handle,FASTCPU) != pdPASS) {
         hal.console->printf("FAILED to create task _timer_thread on FASTCPU\n");
@@ -591,19 +592,18 @@ void Scheduler::print_main_loop_rate(void)
     }
 }
 
-void IRAM_ATTR Scheduler::_ahrs_thread(void *arg)
+void IRAM_ATTR Scheduler::_gcs_thread(void *arg)
 {
-    BinarySemaphore* sem = (BinarySemaphore*) arg;
-
     while(true) {
-        sem->wait_blocking();
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-        AP::ahrs().update(true);
+        gcs().update_receive();
+        gcs().update_send();
     }
 }
 
-void Scheduler::ahrs_signal() {
-    _ahrs_sem.signal();
+void Scheduler::gcs_signal() {
+    xTaskNotifyGive(_gcs_task_handle);
 }
 
 void IRAM_ATTR Scheduler::_main_thread(void *arg)

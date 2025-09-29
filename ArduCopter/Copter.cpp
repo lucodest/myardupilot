@@ -207,8 +207,12 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #endif
     SCHED_TASK(standby_update,        100,    75,  96),
     SCHED_TASK(lost_vehicle_check,    10,     50,  99),
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    SCHED_TASK(gcs_update,            400,   400,  103),
+#else
     SCHED_TASK_CLASS(GCS,                  (GCS*)&copter._gcs,          update_receive, 400, 180, 102),
     SCHED_TASK_CLASS(GCS,                  (GCS*)&copter._gcs,          update_send,    400, 550, 105),
+#endif
 #if HAL_MOUNT_ENABLED
     SCHED_TASK_CLASS(AP_Mount,             &copter.camera_mount,        update,          50,  75, 108),
 #endif
@@ -898,13 +902,16 @@ void Copter::update_super_simple_bearing(bool force_update)
 
 void Copter::read_AHRS(void)
 {
-/* #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-    hal.scheduler->ahrs_signal();
-#else */
     // we tell AHRS to skip INS update as we have already done it in FAST_TASK.
     ahrs.update(true);
-/* #endif */
 }
+
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+void Copter::gcs_update()
+{
+    hal.scheduler->gcs_signal();
+}
+#endif
 
 // read baro and log control tuning
 void Copter::update_altitude()
