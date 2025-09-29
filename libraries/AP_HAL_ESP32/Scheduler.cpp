@@ -84,11 +84,11 @@ void Scheduler::init()
     #define SLOWCPU 1
 
     // pin main thread to Core 0, and we'll also pin other heavy-tasks to core 1, like wifi-related.
-    if (xTaskCreatePinnedToCore(_main_thread, "APM_MAIN", Scheduler::MAIN_SS, this, Scheduler::MAIN_PRIO, &_main_task_handle,FASTCPU) != pdPASS) {
+    if (xTaskCreatePinnedToCore(_main_thread, "APM_MAIN", Scheduler::MAIN_SS, this, Scheduler::MAIN_PRIO, &_main_task_handle,SLOWCPU) != pdPASS) {
     //if (xTaskCreate(_main_thread, "APM_MAIN", Scheduler::MAIN_SS, this, Scheduler::MAIN_PRIO, &_main_task_handle) != pdPASS) {
-        hal.console->printf("FAILED to create task _main_thread on FASTCPU\n");
+        hal.console->printf("FAILED to create task _main_thread on SLOWCPU\n");
     } else {
-    	hal.console->printf("OK created task _main_thread on FASTCPU\n");
+    	hal.console->printf("OK created task _main_thread on SLOWCPU\n");
     }
 
     //Create timer for proper delay_microseconds()
@@ -99,10 +99,10 @@ void Scheduler::init()
     };
     esp_timer_create(&targ, &delay_timer_handle);
 
-    /* if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,SLOWCPU) != pdPASS) {
-         hal.console->printf("FAILED to create task _ahrs_thread on SLOWCPU\n");
+    /* if (xTaskCreatePinnedToCore(_ahrs_thread, "APM_AHRS", Scheduler::MAIN_SS, &_ahrs_sem, Scheduler::MAIN_PRIO, &_ahrs_task_handle,FASTCPU) != pdPASS) {
+         hal.console->printf("FAILED to create task _ahrs_thread on FASTCPU\n");
     } else {
-    	hal.console->printf("OK created task _ahrs_thread on SLOWCPU\n");
+    	hal.console->printf("OK created task _ahrs_thread on FASTCPU\n");
     } */
 
     if (xTaskCreatePinnedToCore(_timer_thread, "APM_TIMER", TIMER_SS, this, TIMER_PRIO, &_timer_task_handle,FASTCPU) != pdPASS) {
@@ -111,16 +111,16 @@ void Scheduler::init()
     	hal.console->printf("OK created task _timer_thread on FASTCPU\n");
     }	
 
-    if (xTaskCreatePinnedToCore(_rcout_thread, "APM_RCOUT", RCOUT_SS, this, RCOUT_PRIO, &_rcout_task_handle,SLOWCPU) != pdPASS) {
-       hal.console->printf("FAILED to create task _rcout_thread on SLOWCPU\n");
+    if (xTaskCreatePinnedToCore(_rcout_thread, "APM_RCOUT", RCOUT_SS, this, RCOUT_PRIO, &_rcout_task_handle,FASTCPU) != pdPASS) {
+       hal.console->printf("FAILED to create task _rcout_thread on FASTCPU\n");
     } else {
-       hal.console->printf("OK created task _rcout_thread on SLOWCPU\n");
+       hal.console->printf("OK created task _rcout_thread on FASTCPU\n");
     }
 
-    /* if (xTaskCreatePinnedToCore(_rcin_thread, "APM_RCIN", RCIN_SS, this, RCIN_PRIO, &_rcin_task_handle,SLOWCPU) != pdPASS) {
-       hal.console->printf("FAILED to create task _rcin_thread on SLOWCPU\n");
+    /* if (xTaskCreatePinnedToCore(_rcin_thread, "APM_RCIN", RCIN_SS, this, RCIN_PRIO, &_rcin_task_handle,FASTCPU) != pdPASS) {
+       hal.console->printf("FAILED to create task _rcin_thread on FASTCPU\n");
     } else {
-       hal.console->printf("OK created task _rcin_thread on SLOWCPU\n");
+       hal.console->printf("OK created task _rcin_thread on FASTCPU\n");
     } */
 
     // pin this thread to Core 1 as it keeps all teh uart/s feed data, and we need that quick.
@@ -131,16 +131,16 @@ void Scheduler::init()
     }	  
 
     // we put those on the SLOW core as it mounts the sd card, and that often isn't connected.
-    if (xTaskCreatePinnedToCore(_io_thread, "SchedulerIO:APM_IO", IO_SS, this, IO_PRIO, &_io_task_handle,SLOWCPU) != pdPASS) {
-        hal.console->printf("FAILED to create task _io_thread on SLOWCPU\n");
+    if (xTaskCreatePinnedToCore(_io_thread, "SchedulerIO:APM_IO", IO_SS, this, IO_PRIO, &_io_task_handle,FASTCPU) != pdPASS) {
+        hal.console->printf("FAILED to create task _io_thread on FASTCPU\n");
     } else {
-        hal.console->printf("OK created task _io_thread on SLOWCPU\n");
+        hal.console->printf("OK created task _io_thread on FASTCPU\n");
     }	 
 
-    if (xTaskCreatePinnedToCore(_storage_thread, "APM_STORAGE", STORAGE_SS, this, STORAGE_PRIO, &_storage_task_handle,SLOWCPU) != pdPASS) { //no actual flash writes without this, storage kinda appears to work, but does an erase on every boot and params don't persist over reset etc.
-        hal.console->printf("FAILED to create task _storage_thread on SLOWCPU\n");
+    if (xTaskCreatePinnedToCore(_storage_thread, "APM_STORAGE", STORAGE_SS, this, STORAGE_PRIO, &_storage_task_handle,FASTCPU) != pdPASS) { //no actual flash writes without this, storage kinda appears to work, but does an erase on every boot and params don't persist over reset etc.
+        hal.console->printf("FAILED to create task _storage_thread on FASTCPU\n");
     } else {
-    	hal.console->printf("OK created task _storage_thread on SLOWCPU\n");
+    	hal.console->printf("OK created task _storage_thread on FASTCPU\n");
     }
 
     //   xTaskCreatePinnedToCore(_print_profile, "APM_PROFILE", IO_SS, this, IO_PRIO, nullptr,SLOWCPU);
@@ -210,7 +210,7 @@ bool Scheduler::thread_create(AP_HAL::MemberProc proc, const char *name, uint32_
     uint32_t actual_stack_size = requested_stack_size+EXTRA_THREAD_SPACE;
 
     tskTaskControlBlock* xhandle;
-    BaseType_t xReturned = xTaskCreate(thread_create_trampoline, name, actual_stack_size, tproc, thread_priority, &xhandle);
+    BaseType_t xReturned = xTaskCreatePinnedToCore(thread_create_trampoline, name, actual_stack_size, tproc, thread_priority, &xhandle,FASTCPU);
     if (xReturned != pdPASS) {
         free(tproc);
         return false;
@@ -623,7 +623,7 @@ void IRAM_ATTR Scheduler::_main_thread(void *arg)
     sched->set_system_initialized();
 
     //initialize WTD for current thread on FASTCPU, all cores will be (1 << CONFIG_FREERTOS_NUMBER_OF_CORES) - 1
-    wdt_init( TWDT_TIMEOUT_MS, 1 << FASTCPU ); // 3 sec
+    wdt_init( TWDT_TIMEOUT_MS, 1 << SLOWCPU ); // 3 sec
 
 
 #ifdef SCHEDDEBUG
@@ -633,7 +633,7 @@ void IRAM_ATTR Scheduler::_main_thread(void *arg)
         sched->callbacks->loop();
 
         //vTaskDelay(1);
-        hal.scheduler->delay_microseconds(250);
+        //hal.scheduler->delay_microseconds(250);
 
         // run stats periodically
 //#ifdef SCHEDDEBUG
