@@ -482,7 +482,7 @@ void NavEKF3_core::CorrectExtNavVelForSensorOffset(ext_nav_vel_elements &ext_nav
 }
 
 // calculate velocity variance helper function
-void NavEKF3_core::CalculateVelInnovationsAndVariances(const Vector3F &velocity, ftype noise, ftype accel_scale, Vector3F &innovations, Vector3F &variances) const
+void IRAM_ATTR NavEKF3_core::CalculateVelInnovationsAndVariances(const Vector3F &velocity, ftype noise, ftype accel_scale, Vector3F &innovations, Vector3F &variances) const
 {
     // innovations are latest estimate - latest observation
     innovations = stateStruct.velocity - velocity;
@@ -499,7 +499,7 @@ void NavEKF3_core::CalculateVelInnovationsAndVariances(const Vector3F &velocity,
 *                   FUSE MEASURED_DATA                  *
 ********************************************************/
 // select fusion of velocity, position and height measurements
-void NavEKF3_core::SelectVelPosFusion()
+void IRAM_ATTR NavEKF3_core::SelectVelPosFusion()
 {
     // Check if the magnetometer has been fused on that time step and the filter is running at faster than 200 Hz
     // If so, don't fuse measurements on this time step to reduce frame over-runs
@@ -691,7 +691,7 @@ void NavEKF3_core::SelectVelPosFusion()
 }
 
 // fuse selected position, velocity and height measurements
-void NavEKF3_core::FuseVelPosNED()
+void IRAM_ATTR NavEKF3_core::FuseVelPosNED()
 {
     // declare variables used to control access to arrays
     bool fuseData[6] {};
@@ -1178,7 +1178,7 @@ void NavEKF3_core::FuseVelPosNED()
 ********************************************************/
 
 // select the height measurement to be fused from the available baro, range finder and GPS sources
-void NavEKF3_core::selectHeightForFusion()
+void IRAM_ATTR NavEKF3_core::selectHeightForFusion()
 {
 #if AP_RANGEFINDER_ENABLED
     // Read range finder data and check for new data in the buffer

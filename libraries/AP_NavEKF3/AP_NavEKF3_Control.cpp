@@ -806,7 +806,7 @@ void IRAM_ATTR NavEKF3_core::updateFilterStatus(void)
     filterStatus.value = status.value;
 }
 
-void NavEKF3_core::runYawEstimatorPrediction()
+void IRAM_ATTR NavEKF3_core::runYawEstimatorPrediction()
 {
     // exit immediately if no yaw estimator
     if (yawEstimator == nullptr) {
@@ -828,7 +828,7 @@ void NavEKF3_core::runYawEstimatorPrediction()
     yawEstimator->update(imuDataDelayed.delAng, imuDataDelayed.delVel, imuDataDelayed.delAngDT, imuDataDelayed.delVelDT, EKFGSF_run_filterbank, trueAirspeed);
 }
 
-void NavEKF3_core::runYawEstimatorCorrection()
+void IRAM_ATTR NavEKF3_core::runYawEstimatorCorrection()
 {
     // exit immediately if no yaw estimator
     if (yawEstimator == nullptr) {

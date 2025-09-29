@@ -27,7 +27,7 @@
 
 EKFGSF_yaw::EKFGSF_yaw() {};
 
-void EKFGSF_yaw::update(const Vector3F &delAng,
+void IRAM_ATTR EKFGSF_yaw::update(const Vector3F &delAng,
                         const Vector3F &delVel,
                         const ftype delAngDT,
                         const ftype delVelDT,
@@ -133,7 +133,7 @@ void EKFGSF_yaw::update(const Vector3F &delAng,
     }
 }
 
-void EKFGSF_yaw::fuseVelData(const Vector2F &vel, const ftype velAcc)
+void IRAM_ATTR EKFGSF_yaw::fuseVelData(const Vector2F &vel, const ftype velAcc)
 {
     // convert reported accuracy to a variance, but limit lower value to protect algorithm stability
     const ftype velObsVar = sq(fmaxF(velAcc, 0.5f));
@@ -191,7 +191,7 @@ void EKFGSF_yaw::fuseVelData(const Vector2F &vel, const ftype velAcc)
     }
 }
 
-void EKFGSF_yaw::predictAHRS(const uint8_t mdl_idx)
+void IRAM_ATTR EKFGSF_yaw::predictAHRS(const uint8_t mdl_idx)
 {
     // Generate attitude solution using simple complementary filter for the selected model
 
@@ -315,7 +315,7 @@ void EKFGSF_yaw::alignYaw()
 }
 
 // predict states and covariance for specified model index
-void EKFGSF_yaw::predict(const uint8_t mdl_idx)
+void IRAM_ATTR EKFGSF_yaw::predict(const uint8_t mdl_idx)
 {
     // generate an attitude reference using IMU data
     predictAHRS(mdl_idx);
@@ -395,7 +395,7 @@ void EKFGSF_yaw::predict(const uint8_t mdl_idx)
 
 // Update EKF states and covariance for specified model index using velocity measurement
 // Returns false if the sttae and covariance correction failed
-bool EKFGSF_yaw::correct(const uint8_t mdl_idx, const Vector2F &vel, const ftype velObsVar)
+bool IRAM_ATTR EKFGSF_yaw::correct(const uint8_t mdl_idx, const Vector2F &vel, const ftype velObsVar)
 {
     // calculate velocity observation innovations
     EKF[mdl_idx].innov[0] = EKF[mdl_idx].X[0] - vel[0];
@@ -565,7 +565,7 @@ void EKFGSF_yaw::resetEKFGSF()
 }
 
 // returns the probability of a selected model output assuming a gaussian error distribution
-ftype EKFGSF_yaw::gaussianDensity(const uint8_t mdl_idx) const
+ftype IRAM_ATTR EKFGSF_yaw::gaussianDensity(const uint8_t mdl_idx) const
 {
     const ftype t2 = EKF[mdl_idx].S[0][0] * EKF[mdl_idx].S[1][1];
     const ftype t5 = EKF[mdl_idx].S[0][1] * EKF[mdl_idx].S[1][0];
@@ -593,7 +593,7 @@ ftype EKFGSF_yaw::gaussianDensity(const uint8_t mdl_idx) const
     return normDist;
 }
 
-void EKFGSF_yaw::forceSymmetry(const uint8_t mdl_idx)
+void IRAM_ATTR EKFGSF_yaw::forceSymmetry(const uint8_t mdl_idx)
 {
     ftype P01 = 0.5f * (EKF[mdl_idx].P[0][1] + EKF[mdl_idx].P[1][0]);
     ftype P02 = 0.5f * (EKF[mdl_idx].P[0][2] + EKF[mdl_idx].P[2][0]);
@@ -604,7 +604,7 @@ void EKFGSF_yaw::forceSymmetry(const uint8_t mdl_idx)
 }
 
 // Apply a body frame delta angle to the body to earth frame rotation matrix using a small angle approximation
-Matrix3F EKFGSF_yaw::updateRotMat(const Matrix3F &R, const Vector3F &g) const
+Matrix3F IRAM_ATTR EKFGSF_yaw::updateRotMat(const Matrix3F &R, const Vector3F &g) const
 {
     Matrix3F ret = R;
     ret[0][0] += R[0][1] * g[2] - R[0][2] * g[1];
