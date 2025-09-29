@@ -113,18 +113,20 @@ SCHED_TASK_CLASS arguments:
 const AP_Scheduler::Task Copter::scheduler_tasks[] = {
     // update INS immediately to get current gyro data populated
     FAST_TASK_CLASS(AP_InertialSensor, &copter.ins, update),
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    FAST_TASK(mo_signal),
+#else
     // run low level rate controllers that only require IMU data
     FAST_TASK(run_rate_controller_main),
+#endif
 #if AC_CUSTOMCONTROL_MULTI_ENABLED
     FAST_TASK(run_custom_controller),
 #endif
 #if FRAME_CONFIG == HELI_FRAME
     FAST_TASK(heli_update_autorotation),
 #endif //HELI_FRAME
+#if CONFIG_HAL_BOARD != HAL_BOARD_ESP32
     // send outputs to the motors library immediately
-#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-    FAST_TASK(mo_signal),
-#else
     FAST_TASK(motors_output_main),
 #endif
      // run EKF state estimator (expensive)
@@ -916,6 +918,7 @@ void Copter::mo_update()
     while(true) {
         mo_sem.wait_blocking();
 
+        run_rate_controller_main();
         motors_output_main();
     }
 }
