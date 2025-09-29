@@ -909,8 +909,14 @@ void Copter::read_AHRS(void)
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
 void Copter::gcs_update()
 {
+    //Debug
+    hal.console->printf("gcs task started\n");
+
     while(true) {
         copter.gcs_sem.wait_blocking();
+
+        //Debug
+        hal.console->printf("gl\n");
 
         copter._gcs.update_receive();
         copter._gcs.update_send();
@@ -920,6 +926,9 @@ void Copter::gcs_update()
 void Copter::gcs_signal()
 {
     copter.gcs_sem.signal();
+
+    //Debug
+    hal.console->printf("gs\n");
 }
 #endif
 
