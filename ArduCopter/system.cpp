@@ -37,6 +37,10 @@ void Copter::init_ardupilot()
     // setup telem slots with serial ports
     gcs().setup_uarts();
 
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&Copter::gcs_update, void), "APM_GCS", 1024 * 3, AP_HAL::Scheduler::PRIORITY_TIMER, -1);
+#endif
+
 #if OSD_ENABLED
     osd.init();
 #endif

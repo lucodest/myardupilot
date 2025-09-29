@@ -371,10 +371,6 @@ void AP_Vehicle::setup()
 #endif
 #if HAL_GCS_ENABLED
     gcs().setup_console();
-
-#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-    hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&Copter::gcs_update, void), "APM_GCS", 1024 * 3, AP_HAL::Scheduler::PRIORITY_TIMER, -1);
-#endif
 #endif
 
 #if AP_SCRIPTING_ENABLED
