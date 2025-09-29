@@ -910,16 +910,16 @@ void Copter::read_AHRS(void)
 void Copter::gcs_update()
 {
     while(true) {
-        gcs_sem.wait_blocking();
+        copter.gcs_sem.wait_blocking();
 
-        gcs().update_receive();
-        gcs().update_send();
+        copter._gcs.update_receive();
+        copter._gcs.update_send();
     }
 }
 
 void Copter::gcs_signal()
 {
-    gcs_sem.signal();
+    copter.gcs_sem.signal();
 }
 #endif
 
