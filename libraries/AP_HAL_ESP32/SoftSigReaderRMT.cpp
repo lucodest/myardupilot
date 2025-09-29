@@ -16,7 +16,7 @@
  *
  */
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+#ifdef HAL_ESP32_RMT_RX_PIN_NUMBER
 
 #include "SoftSigReaderRMT.h"
 
@@ -153,4 +153,4 @@ bool SoftSigReaderRMT::read(uint32_t &widths0, uint32_t &widths1)
 }
 
 
-#endif //CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+#endif //HAL_ESP32_RMT_RX_PIN_NUMBER

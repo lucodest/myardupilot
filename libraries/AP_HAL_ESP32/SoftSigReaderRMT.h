@@ -17,6 +17,8 @@
   */
 #pragma once
 
+#ifdef HAL_ESP32_RMT_RX_PIN_NUMBER
+
 #include <AP_HAL/utility/RingBuffer.h>
 #include "AP_HAL_ESP32.h"
 #include "driver/rmt.h"
@@ -45,3 +47,4 @@ private:
 };
 }
 
+#endif
