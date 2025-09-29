@@ -729,6 +729,7 @@ private:
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
     HAL_BinarySemaphore gcs_sem;
     void gcs_update();
+    void gcs_signal();
 #endif
 
     // Attitude.cpp
