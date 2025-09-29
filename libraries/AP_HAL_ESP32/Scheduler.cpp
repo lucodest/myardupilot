@@ -25,9 +25,6 @@
 
 #include "esp_task_wdt.h"
 
-//Find a better solution for getting the gcs
-#include "Copter.h"
-
 #include <AP_HAL/AP_HAL.h>
 #include <AP_AHRS/AP_AHRS.h>
 #include <AP_Scheduler/AP_Scheduler.h>
@@ -101,12 +98,6 @@ void Scheduler::init()
         .dispatch_method = ESP_TIMER_ISR
     };
     esp_timer_create(&targ, &delay_timer_handle);
-
-    if (xTaskCreatePinnedToCore(_gcs_thread, "APM_GCS", TIMER_SS, NULL, WIFI_PRIO1, &_gcs_task_handle,FASTCPU) != pdPASS) {
-         hal.console->printf("FAILED to create task _gcs_thread on FASTCPU\n");
-    } else {
-    	hal.console->printf("OK created task _gcs_thread on FASTCPU\n");
-    }
 
     if (xTaskCreatePinnedToCore(_timer_thread, "APM_TIMER", TIMER_SS, this, TIMER_PRIO, &_timer_task_handle,FASTCPU) != pdPASS) {
         hal.console->printf("FAILED to create task _timer_thread on FASTCPU\n");
@@ -592,20 +583,6 @@ void Scheduler::print_main_loop_rate(void)
         const uint16_t expected_loop_rate = AP::scheduler().get_loop_rate_hz();
         hal.console->printf("loop_rate: actual: %fHz, expected: %uHz\n", actual_loop_rate, expected_loop_rate);
     }
-}
-
-void IRAM_ATTR Scheduler::_gcs_thread(void *arg)
-{
-    while(true) {
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-
-        gcs().update_receive();
-        gcs().update_send();
-    }
-}
-
-void Scheduler::gcs_signal() {
-    xTaskNotifyGive(_gcs_task_handle);
 }
 
 void IRAM_ATTR Scheduler::_main_thread(void *arg)

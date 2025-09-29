@@ -126,10 +126,6 @@ public:
         return false;
     }
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-    virtual void gcs_signal() {}
-#endif
-
 private:
 
     AP_HAL::Proc _delay_cb;

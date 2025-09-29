@@ -117,7 +117,6 @@ private:
     static bool _initialized;
 
     tskTaskControlBlock* _main_task_handle;
-    tskTaskControlBlock* _gcs_task_handle;
     tskTaskControlBlock* _timer_task_handle;
     tskTaskControlBlock* _rcin_task_handle;
     tskTaskControlBlock* _rcout_task_handle;
@@ -130,7 +129,6 @@ private:
     static void _delay_cb(void *arg);
 
     static void _main_thread(void *arg);
-    static void _gcs_thread(void *arg);
     static void _timer_thread(void *arg);
     static void _rcout_thread(void *arg);
     static void _rcin_thread(void *arg);
