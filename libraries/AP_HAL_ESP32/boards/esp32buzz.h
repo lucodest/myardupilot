@@ -67,7 +67,7 @@
 #define AP_AIRSPEED_BACKEND_DEFAULT_ENABLED 0
 
 // allow boot without a baro
-#define HAL_BARO_ALLOW_INIT_NO_BARO 1
+//#define HAL_BARO_ALLOW_INIT_NO_BARO 1
 
 // disable all baros (except one of ur choice)
 #define AP_BARO_PROBE_EXTERNAL_I2C_BUSES 0
@@ -95,6 +95,7 @@
 #define AP_RANGEFINDER_ENABLED 0
 #define AC_PRECLAND_ENABLED 0
 #define EK3_FEATURE_BODY_ODOM 0
+#define EK3_FEATURE_EXTERNAL_NAV 0
 #define AP_BEACON_ENABLED 0
 
 //#define HAL_INS_MPU9250_NAME "mpu9250"
@@ -155,8 +156,8 @@
 
 
 // rcin on what pin?
-#define HAL_ESP32_RCIN GPIO_NUM_12
-#define HAL_ESP32_RMT_RX_PIN_NUMBER 12
+//#define HAL_ESP32_RCIN GPIO_NUM_12
+//#define HAL_ESP32_RMT_RX_PIN_NUMBER 12
 
 //HARDWARE UARTS
 #define HAL_ESP32_UART_DEVICES \
