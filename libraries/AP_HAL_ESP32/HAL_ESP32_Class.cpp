@@ -34,6 +34,7 @@
 #endif
 #include "LSPDriver.h"
 #include "LRCInput.h"
+#include "LRCOutput.h"
 
 static ESP32::UARTDriver cons(0);
 #ifdef HAL_ESP32_WIFI
@@ -76,7 +77,7 @@ static ESP32::GPIO gpioDriver;
 #if AP_SIM_ENABLED
 static Empty::RCOutput rcoutDriver;
 #else
-static ESP32::RCOutput rcoutDriver;
+static ESP32::LRCOutput rcoutDriver;
 #endif
 static ESP32::LRCInput rcinDriver;
 static ESP32::Scheduler schedulerInstance;
