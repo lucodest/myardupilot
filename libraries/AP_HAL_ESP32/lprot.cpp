@@ -196,7 +196,7 @@ void LProt::sendMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
 }
 
 void LProt::sendRcData(RC_DATA_t* data) {
-    sendFrame((SENSOR << 4) | RC, data, sizeof(RC_DATA_t));
+    sendFrame((SENSOR << 4) | RC, (uint8_t*) data, sizeof(RC_DATA_t));
 }
 
 void LProt::handleMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
