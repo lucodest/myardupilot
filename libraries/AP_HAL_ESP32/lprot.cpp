@@ -195,6 +195,10 @@ void LProt::sendMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
     sendFrame((STREAM << 4) | (id & 0xf), data, len);
 }
 
+void LProt::sendRcData(RC_DATA_t* data) {
+    sendFrame((SENSOR << 4) | RC, data, sizeof(RC_DATA_t));
+}
+
 void LProt::handleMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
     LSPDriver* vu = LSPDriver::get(id);
     if(vu != NULL) {

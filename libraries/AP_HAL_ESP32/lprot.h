@@ -91,6 +91,7 @@ public:
 
     //Functions for sending frames, all are called by user
     void sendMultiStream(uint8_t id, uint8_t* data, uint8_t len);
+    void sendRcData(RC_DATA_t* data);
 
 protected:
 
