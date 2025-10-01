@@ -208,7 +208,7 @@ void LProt::handleMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
 
 void LProt::handleRcData(RC_DATA_t data) {
 
-    ((LRCInput*) hal.rcin)->write(&data);
+    ((LRCInput*) hal.rcin)->write(&data.chan1);
 }
 
 void LProt::handleBaroData(BARO_DATA_t data) {
