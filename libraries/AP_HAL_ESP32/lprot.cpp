@@ -207,16 +207,8 @@ void LProt::handleMultiStream(uint8_t id, uint8_t* data, uint8_t len) {
 }
 
 void LProt::handleRcData(RC_DATA_t data) {
-    uint16_t periods[RC_INPUT_NUM_CHANNELS];
-    //Find a better way pls
-    periods[0] = data.chan1;
-    periods[1] = data.chan2;
-    periods[2] = data.chan3;
-    periods[3] = data.chan4;
-    periods[4] = data.chan5;
-    periods[5] = data.chan6;
 
-    ((LRCInput*) hal.rcin)->write(periods);
+    ((LRCInput*) hal.rcin)->write(&data);
 }
 
 void LProt::handleBaroData(BARO_DATA_t data) {

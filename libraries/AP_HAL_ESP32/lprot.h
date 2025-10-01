@@ -78,12 +78,12 @@ public:
     } IMU_DATA_t;
 
     typedef struct PACKED {
-        unsigned chan1 : 11;
-        unsigned chan2 : 11;
-        unsigned chan3 : 11;
-        unsigned chan4 : 11;
-        unsigned chan5 : 11;
-        unsigned chan6 : 11;
+        uint16_t chan1;
+        uint16_t chan2;
+        uint16_t chan3;
+        uint16_t chan4;
+        uint16_t chan5;
+        uint16_t chan6;
     } RC_DATA_t;
 
     //Handle raw recived data, MUST be called by user
