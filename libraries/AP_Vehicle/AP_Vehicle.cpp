@@ -429,7 +429,7 @@ void AP_Vehicle::setup()
     init_ardupilot();
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
-    hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&AP_Vehicle::update_arming, void), "APM_ARMING", 1024 * 3, 19, 0);
+    hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&AP_Vehicle::update_arming, void), "APM_ARMING", 1024 * 3, AP_HAL::Scheduler::PRIORITY_TIMER, -1);
 #endif
 
 #if AP_SCRIPTING_ENABLED
