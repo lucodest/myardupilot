@@ -428,6 +428,10 @@ void AP_Vehicle::setup()
     // init_ardupilot is where the vehicle does most of its initialisation.
     init_ardupilot();
 
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    hal.scheduler->thread_create(FUNCTOR_BIND_MEMBER(&AP_Vehicle::update_arming, void), "APM_ARMING", 1024 * 3, 19, 0);
+#endif
+
 #if AP_SCRIPTING_ENABLED
     scripting.init();
 #endif // AP_SCRIPTING_ENABLED
@@ -689,7 +693,7 @@ const AP_Scheduler::Task AP_Vehicle::scheduler_tasks[] = {
 #if AP_STATS_ENABLED
     SCHED_TASK_CLASS(AP_Stats,             &vehicle.stats,            update,           1, 100, 252),
 #endif
-#if AP_ARMING_ENABLED
+#if AP_ARMING_ENABLED && CONFIG_HAL_BOARD != HAL_BOARD_ESP32
     SCHED_TASK(update_arming,          1,     50, 253),
 #endif
 };
@@ -1053,7 +1057,14 @@ void AP_Vehicle::accel_cal_update()
 // call the arming library's update function
 void AP_Vehicle::update_arming()
 {
-    AP::arming().update();
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    while(true) {
+        hal.scheduler->delay(1000);
+#endif
+        AP::arming().update();
+#if CONFIG_HAL_BOARD == HAL_BOARD_ESP32
+    }
+#endif
 }
 #endif
 
