@@ -618,7 +618,7 @@ void IRAM_ATTR Scheduler::_main_thread(void *arg)
 //#ifdef SCHEDDEBUG
         sched->print_stats();
 //#endif
-        //sched->print_main_loop_rate();
+        sched->print_main_loop_rate();
 
         /* if (ESP_OK != esp_task_wdt_reset()) {
             printf("esp_task_wdt_reset() failed\n");
