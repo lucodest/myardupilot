@@ -99,6 +99,9 @@
 #define AP_BEACON_ENABLED 0
 #define HAL_EFI_ENABLED 0
 
+//Test
+#define HAL_LOGGING_ENABLED 0
+
 //#define HAL_INS_MPU9250_NAME "mpu9250"
 
 // uncommenting one or more of these will give more console debug in certain areas.. ... 
